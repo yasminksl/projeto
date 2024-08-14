@@ -2,10 +2,9 @@
 
     <Head title="Clientes" />
 
-    <!-- botão para criar clientes -->
-
-    <div class="mb-6">
-        <input v-model="search" type="text" placeholder="Search..." class="border border-gray-200 rounded-lg px-2">
+    <div class="flex mb-6">
+        <input v-model="search" type="text" placeholder="Search..." class="flex-grow border border-gray-200 rounded-lg px-2">
+        <Link href="/clients/create"class="ml-3 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Cadastrar</Link>
     </div>
 
     <ul role="list" class="divide-y divide-gray-100">
