@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-defineProps({
+let props = defineProps({
     links: Array
 })
 </script>

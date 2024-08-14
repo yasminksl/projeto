@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ClientResource;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
 
 class ClientController extends Controller
@@ -15,10 +17,12 @@ class ClientController extends Controller
     {
         return Inertia::render('Clients/Index', [
             'title' => 'Clientes',
-            'clients' => Client::paginate(10)->through(fn($client) => [
-                'id' => $client->id,
-                'name' => $client->name
-            ])
+            'clients' => ClientResource::collection(Client::query()
+                ->when(FacadesRequest::input('search'), function ($query, $search) {
+                    $query->where('name', 'like', "%{$search}%");
+                })
+                ->paginate(10)->withQueryString()),
+            'filters' => FacadesRequest::only(['search']),
         ]);
     }
 
