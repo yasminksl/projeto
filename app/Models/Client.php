@@ -11,5 +11,10 @@ class Client extends Model
 
     protected $fillable = [
         'name',
+        'postal_code',
+        'street_address',
+        'address_number',
+        'city',
+        'neighborhood',
     ];
 }

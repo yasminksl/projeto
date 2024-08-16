@@ -31,9 +31,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Clients/Create', [
-            'title' => 'Cadastrar Novo Cliente'
-        ]);
+        return Inertia::render('Clients/Create');
     }
 
     /**
@@ -41,15 +39,28 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $request->validate([
+            'name' => 'required',
+            'postal_code' => 'required',
+            'street_address' => 'required',
+            'address_number' => 'required',
+            'city' => 'required',
+            'neighborhood' => 'required',
+        ]);
+
+        Client::create($attributes);
+
+        return redirect('/clients');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Client $client)
     {
-        //
+        return Inertia::render('Clients/Show', [
+            'client' => ClientResource::make($client)
+        ]);
     }
 
     /**

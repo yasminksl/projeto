@@ -18,6 +18,11 @@ class ClientFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'postal_code' => fake()->postcode(),
+            'street_address' => fake()->streetAddress(),
+            'address_number' => fake()->numberBetween(1, 9999),
+            'city' => fake()->city(),
+            'neighborhood' => fake()->word(),
         ];
     }
 }

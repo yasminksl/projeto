@@ -1,15 +1,17 @@
 <template>
     <!-- Mobile menu, show/hide based on menu state. -->
     <div class="md:hidden" id="mobile-menu">
+
+        <!-- Links -->
         <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="/" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
-                aria-current="page">Dashboard</a>
-            <a href="/orders"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Pedidos</a>
-            <a href="/clients"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Clientes</a>
+            <Link href="/" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" :class="{'bg-gray-900 text-white' : $page.component === 'Dashboard'}"
+            aria-current="page">Dashboard</Link>
+            <Link href="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" :class="{'bg-gray-900 text-white' : $page.component === 'Orders/Index'}"
+            aria-current="page">Pedidos</Link>
+            <Link href="/clients" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" :class="{'bg-gray-900 text-white' : $page.component === 'Clients/Index'}"
+            aria-current="page">Clientes</Link>
         </div>
+
         <div class="border-t border-gray-700 pb-3 pt-4">
             <div class="flex items-center px-5">
                 <div class="flex-shrink-0">
@@ -43,9 +45,11 @@
                     out</a>
             </div>
         </div>
+
     </div>
 </template>
 
-<script>
+<script setup>
+import { Link } from '@inertiajs/vue3';
 
 </script>
