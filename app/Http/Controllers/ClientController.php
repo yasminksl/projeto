@@ -16,7 +16,6 @@ class ClientController extends Controller
     public function index()
     {
         return Inertia::render('Clients/Index', [
-            'title' => 'Clientes',
             'clients' => ClientResource::collection(Client::query()
                 ->when(FacadesRequest::input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%{$search}%");
@@ -66,24 +65,39 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Client $client)
     {
-        //
+        return Inertia::render('Clients/Edit', [
+            'client' => ClientResource::make($client)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Client $client)
     {
-        //
+        $attributes = $request->validate([
+            'name' => 'required',
+            'postal_code' => 'required',
+            'street_address' => 'required',
+            'address_number' => 'required',
+            'city' => 'required',
+            'neighborhood' => 'required',
+        ]);
+
+        $client->update($attributes);
+
+        return redirect('clients');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Client $client)
     {
-        //
+        $client->delete();
+
+        return redirect('/clients');
     }
 }

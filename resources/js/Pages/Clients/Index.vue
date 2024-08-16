@@ -2,9 +2,9 @@
 
     <Head title="Clientes" />
     <Layout title="Clientes">
-        <div class="flex mb-6">
-            <input v-model="search" type="text" placeholder="Pesquisar..." class="flex-grow border border-gray-200 rounded-lg px-2">
-            <Link href="/clients/create"class="ml-3 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Cadastrar</Link>
+        <div class="flex mb-6 space-x-2">
+            <SearchInput v-model="search"/>
+            <CreateButton />
         </div>
 
         <ul role="list" class="divide-y divide-gray-300 border border-gray-300 rounded">
@@ -24,25 +24,16 @@
 </template>
 
 <script setup>
-import { Link, router } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
-import { debounce } from 'lodash';
+import { useSearch } from '@/Composables/useSearch';
 import Pagination from '@/Shared/Pagination.vue';
 import Layout from '@/Shared/Layout.vue';
+import SearchInput from '@/Components/SearchInput.vue';
+import CreateButton from '@/Components/CreateButton.vue';
 
 let props = defineProps({
     clients: Object,
     filters: Object
 });
 
-let search = ref(props.filters.search);
-
-watch(search, debounce(value => {
-    router.get('/clients', { search: value }, {
-            preserveState: true,
-            replace: true
-        }
-    )
-    }, 500)
-);
+let {search} = useSearch(props.filters);
 </script>
