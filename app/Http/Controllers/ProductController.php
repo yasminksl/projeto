@@ -19,7 +19,8 @@ class ProductController extends Controller
                 ->when(FacadesRequest::input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%{$search}%");
                 })
-                ->get(), 
+                ->latest()
+                ->get(),
             'filters' => FacadesRequest::only(['search']),
         ]);
     }
@@ -29,7 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Products/Create');
     }
 
     /**
@@ -37,38 +38,66 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+        ]);
+
+        $product = Product::create($attributes);
+
+        sleep(2);
+
+        return redirect('/products/' . $product->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        return Inertia::render('Products/Show', [
+            'product' => $product,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        return Inertia::render('Products/Edit', [
+            'product' => $product,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        $attributes = $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+        ]);
+
+        $product->update($attributes);
+
+        sleep(2);
+
+        return redirect('/products/' . $product->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        sleep(2);
+
+        return redirect('/products');
     }
 }

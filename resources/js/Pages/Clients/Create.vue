@@ -2,7 +2,7 @@
 
     <Head title="Cadastrar Novo Cliente" />
 
-    <Layout title="Cadastrar Novo Cliente">
+    <Layout title="Novo Cliente">
 
         <ClientForm :initialValues="initialValues" @submit="submit" @cancel="cancel" />
     </Layout>

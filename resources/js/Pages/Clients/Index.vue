@@ -4,7 +4,7 @@
     <Layout title="Clientes">
         <div class="flex mb-6 space-x-2">
             <SearchInput v-model="search"/>
-            <CreateButton />
+            <CreateButton href="/clients/create" text="Cadastrar"/>
         </div>
 
         <ul role="list" class="divide-y divide-gray-300 border border-gray-300 rounded">

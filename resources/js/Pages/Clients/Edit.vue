@@ -35,7 +35,7 @@ let form = useForm({
 let submit = () => {};
 
 let cancel = () => {
-    window.location.href = '/clients';
+    window.location.href = `/clients/${props.client.data.id}`;
 };
 
 const toast = useToast();

@@ -47,9 +47,11 @@ class ClientController extends Controller
             'neighborhood' => 'required',
         ]);
 
-        Client::create($attributes);
+        $client = Client::create($attributes);
 
         sleep(2);
+
+        return redirect('/clients/' . $client->id);
     }
 
     /**
@@ -89,6 +91,8 @@ class ClientController extends Controller
         $client->update($attributes);
 
         sleep(2);
+
+        return redirect('/clients/' . $client->id);
     }
 
     /**

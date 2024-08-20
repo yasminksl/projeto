@@ -16,7 +16,13 @@ use Inertia\Inertia;
     Route::get('/clients/{client}', [ClientController::class, 'show']);
     Route::get('/clients/{client}/edit', [ClientController::class, 'edit']);
     Route::patch('/clients/{client}', [ClientController::class, 'update']);
-    Route::delete('/clients/{client}', [ClientController::class, 'destroy']); // excluir usuário
+    Route::delete('/clients/{client}', [ClientController::class, 'destroy']);
 
     Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/products/create', [ProductController::class, 'create']);
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::get('/products/{product}', [ProductController::class, 'show']);
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit']);
+    Route::patch('/products/{product}', [ProductController::class, 'update']);
+    Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 // });

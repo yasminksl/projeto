@@ -4,9 +4,6 @@
     <Layout :title="`Visualizando cliente #${client.data.id}`">
         <template #headerContent>
             <div>
-                <Link href="/clients" class="text-sm mr-8">
-                Voltar
-                </Link>
                 <Link :href="`/clients/${client.data.id}/edit`"
                     class="rounded-md bg-blue-600 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                 Editar</Link>
@@ -30,6 +27,11 @@
                     </div>
                 </dl>
             </div>
+        </div>
+        <div class="mt-5 ml-1">
+            <Link href="/clients" class="text-indigo-600 hover:text-indigo-900">
+                Voltar
+            </Link>
         </div>
     </Layout>
 
