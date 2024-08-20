@@ -98,6 +98,8 @@ class ClientController extends Controller
     {
         $client->delete();
 
+        sleep(2);
+
         return redirect('/clients');
     }
 }

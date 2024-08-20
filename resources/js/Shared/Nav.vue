@@ -18,6 +18,9 @@
                             <NavLink href="/clients" :active="$page.component === 'Clients/Index'">
                                 Clientes
                             </NavLink>
+                            <NavLink href="/products" :active="$page.component === 'Products/Index'">
+                                Produtos
+                            </NavLink>
                         </div>
                     </div>
                 </div>

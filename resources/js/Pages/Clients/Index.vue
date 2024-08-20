@@ -35,5 +35,5 @@ let props = defineProps({
     filters: Object
 });
 
-let {search} = useSearch(props.filters);
+let {search} = useSearch(props.filters, '/clients');
 </script>

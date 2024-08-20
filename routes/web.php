@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,4 +17,6 @@ use Inertia\Inertia;
     Route::get('/clients/{client}/edit', [ClientController::class, 'edit']);
     Route::patch('/clients/{client}', [ClientController::class, 'update']);
     Route::delete('/clients/{client}', [ClientController::class, 'destroy']); // excluir usuário
+
+    Route::get('/products', [ProductController::class, 'index']);
 // });
