@@ -6,7 +6,8 @@ import { createInertiaApp, router, Link, Head } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import NProgress from 'nprogress';
-import Layout from './Shared/Layout.vue';
+import Toast, { POSITION } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 const appName = import.meta.env.VITE_APP_NAME || 'CRM';
 
@@ -20,16 +21,23 @@ createInertiaApp({
             )
         ).default;
 
-        // if(page.layout === undefined){
-        //     page.layout = Layout;
-        // }
-
         return page;
     },
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
-            .use(plugin)
+        const app = createApp({ render: () => h(App, props) });
+
+        const toastOptions = {
+            position: POSITION.TOP_RIGHT,
+            timeout: 5000,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: 'bar',
+        };
+
+        app.use(plugin)
             .use(ZiggyVue)
+            .use(Toast, toastOptions)
             .component("Link", Link)
             .component("Head", Head)
             .mount(el);

@@ -49,7 +49,7 @@ class ClientController extends Controller
 
         Client::create($attributes);
 
-        return redirect('/clients');
+        sleep(2);
     }
 
     /**
@@ -88,7 +88,7 @@ class ClientController extends Controller
 
         $client->update($attributes);
 
-        return redirect('clients');
+        sleep(2);
     }
 
     /**

@@ -80,6 +80,7 @@
 import InputField from '@/Components/InputField.vue';
 import { useCep } from '@/Composables/useCep';
 import { useForm } from '@inertiajs/inertia-vue3';
+import { useToast } from 'vue-toastification';
 
 let props = defineProps({
     initialValues: {
@@ -113,12 +114,15 @@ let handlePostalCodeBlur = () => {
         }
     });
 };
+const toast = useToast();
 
 let submit = () => {
     if (props.initialValues.id) {
         form.patch(`/clients/${props.initialValues.id}`);
+        toast.success("Cliente atualizado com sucesso!");
     } else {
         form.post('/clients');
+        toast.success("Cliente cadastrado com sucesso!");
     }
     emit('submit');
 };
