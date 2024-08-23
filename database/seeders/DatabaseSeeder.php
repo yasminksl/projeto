@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Client;
+use App\Models\Order;
+use App\Models\OrderHistory;
 use App\Models\Product;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,6 +24,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Product::factory(3)->create();
+        Client::factory(10)->create();
+
+        Product::factory(20)->create();
+
+        Order::factory(30)->create();
+
+        OrderHistory::factory(50)->create();
     }
 }

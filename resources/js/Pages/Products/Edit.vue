@@ -14,7 +14,7 @@
 <script setup>
 import Layout from '@/Shared/Layout.vue';
 import { useForm, Link } from '@inertiajs/vue3';
-import ProductForm from '@/Components/ProductForm.vue';
+import ProductForm from '@/Components/forms/ProductForm.vue';
 import { useToast } from 'vue-toastification';
 
 let props = defineProps({

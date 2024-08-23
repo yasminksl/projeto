@@ -10,7 +10,7 @@
 
 <script setup>
 import Layout from '@/Shared/Layout.vue';
-import ClientForm from '@/Components/ClientForm.vue';
+import ClientForm from '@/Components/forms/ClientForm.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 
 let initialValues = {

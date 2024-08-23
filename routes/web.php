@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -8,7 +9,10 @@ use Inertia\Inertia;
 // Route::middleware('auth')->group(function () {
     Route::inertia('/', 'Dashboard');
 
-    Route::inertia('/orders', 'Orders/Index');
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/orders/create', [OrderController::class, 'create']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
 
     Route::get('/clients', [ClientController::class, 'index']);
     Route::get('/clients/create', [ClientController::class, 'create']);

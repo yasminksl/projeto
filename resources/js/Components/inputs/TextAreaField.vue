@@ -6,7 +6,7 @@
         </label>
         <div class="relative mt-2 rounded-md shadow-sm">
             <textarea :name="name" :id="id" :autocomplete="autocomplete" :placeholder="placeholder"
-                :class="textAreaClass" :required="required" v-bind="$attrs" v-on="listeners" :value="modelValue"
+                :class="textAreaClass" v-bind="$attrs" v-on="listeners" :value="modelValue"
                 @input="$emit('update:modelValue', $event.target.value)" :rows="rows" :cols="cols" />
         </div>
     </div>
@@ -36,10 +36,6 @@ let props = defineProps({
         type: String,
         default: '',
     },
-    required: {
-        type: Boolean,
-        default: false,
-    },
     wrapperClass: {
         type: String,
         default: '',
@@ -47,7 +43,7 @@ let props = defineProps({
     textAreaClass: {
         type: String,
         default:
-            'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-32',
+            'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 h-32',
     },
     modelValue: {
         type: String,

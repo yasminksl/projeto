@@ -3,7 +3,7 @@
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     type="text"
-    placeholder="Pesquisar..."
+    :placeholder="placeholder"
     class="flex-grow border border-gray-200 rounded-lg px-2"
   />
 </template>
@@ -12,5 +12,9 @@
 
 let props = defineProps({
   modelValue: String,
+  placeholder: {
+    type: String,
+    default: 'Pesquisar...'
+  },
 });
 </script>

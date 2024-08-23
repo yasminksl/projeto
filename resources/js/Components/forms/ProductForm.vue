@@ -31,7 +31,7 @@
             </div>
 
             <div class="mt-6 flex items-center justify-end gap-x-6">
-                <Link type="Link" @click="$emit('cancel')" class="text-sm font-semibold leading-6 text-gray-900">
+                <Link href="/products" class="text-sm font-semibold leading-6 text-gray-900">
                     Cancelar
                 </Link>
                 <button type="submit" :disabled="form.processing"
@@ -44,8 +44,8 @@
 </template>
 
 <script setup>
-import InputField from '@/Components/InputField.vue';
-import TextAreaField from './TextAreaField.vue';
+import InputField from '@/Components/inputs/InputField.vue';
+import TextAreaField from '../inputs/TextAreaField.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { useToast } from 'vue-toastification';
 
@@ -60,7 +60,7 @@ let props = defineProps({
     }
 });
 
-let emit = defineEmits(['submit', 'cancel']);
+let emit = defineEmits('submit');
 
 let form = useForm(props.initialValues);
 

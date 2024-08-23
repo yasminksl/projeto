@@ -2,9 +2,10 @@
 
     <Head title="Produtos" />
     <Layout title="Produtos">
+
         <div class="flex mb-6 space-x-2">
             <SearchInput v-model="search" />
-            <CreateButton href="/products/create" text="Criar Produto"/>
+            <CreateButton href="/products/create" text="Criar Produto" />
         </div>
 
         <table class="min-w-full divide-y divide-gray-200">
@@ -44,19 +45,19 @@
 <script setup>
 import Layout from '@/Shared/Layout.vue';
 import { router } from '@inertiajs/vue3';
-import SearchInput from '@/Components/SearchInput.vue';
+import SearchInput from '@/Components/inputs/SearchInput.vue';
 import { useSearch } from '@/Composables/useSearch';
-import CreateButton from '@/Components/CreateButton.vue';
+import CreateButton from '@/Components/actions/CreateButton.vue';
 
 let props = defineProps({
     products: Object,
     filters: Object
 });
 
-let {search} = useSearch(props.filters, '/products');
+let { search } = useSearch(props.filters, '/products');
 
 const goToProduct = (id) => {
-    router.get(`/products/${id}`);
+    router.push(`/products/${id}`);
 };
 
 </script>

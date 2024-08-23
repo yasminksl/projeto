@@ -2,12 +2,12 @@
 
     <Head title="Criar Novo Produto" />
     <Layout title="Novo Produto">
-        <ProductForm :initialValues="initialValues" @submit="submit" @cancel="cancel" />
+        <ProductForm :initialValues="initialValues" @submit="submit" />
     </Layout>
 </template>
 
 <script setup>
-import ProductForm from '@/Components/ProductForm.vue';
+import ProductForm from '@/Components/forms/ProductForm.vue';
 import Layout from '@/Shared/Layout.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 
@@ -19,10 +19,6 @@ let initialValues = {
 
 let form = useForm(initialValues);
 
-let submit = () => {};
-
-let cancel = () => {
-window.location.href = '/products';
-};
+let submit = () => { };
 
 </script>

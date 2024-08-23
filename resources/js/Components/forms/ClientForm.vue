@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import InputField from '@/Components/InputField.vue';
+import InputField from '@/Components/inputs/InputField.vue';
 import { useCep } from '@/Composables/useCep';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { useToast } from 'vue-toastification';
