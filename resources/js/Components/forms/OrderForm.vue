@@ -38,7 +38,8 @@
                     label="Comentários/Anotações (Opcional)" v-model="form.comments" />
 
                 <!-- Resumo do Pedido -->
-                <OrderSummary :selectedProducts="selectedProducts" @update:finalAmount="updateFinalAmount" />
+                <OrderSummary :selectedProducts="selectedProducts" @update:finalAmount="updateFinalAmount"
+                    @update:discount="updateDiscount" @update:interest="updateInterest" />
 
                 <!-- Botões de Ação -->
                 <div class="flex justify-between">
@@ -76,7 +77,9 @@ const props = defineProps({
             status: '',
             delivery_date: '',
             comments: '',
-            products: []
+            products: [],
+            discount: '',
+            interest: ''
         })
     },
     clients: Array,
@@ -116,6 +119,14 @@ const updateProduct = (index, product) => {
 
 const updateFinalAmount = (amount) => {
     form.total_amount = amount;
+};
+
+const updateDiscount = (discount) => {
+    form.discount = discount;
+};
+
+const updateInterest = (interest) => {
+    form.interest = interest;
 };
 
 const toast = useToast();

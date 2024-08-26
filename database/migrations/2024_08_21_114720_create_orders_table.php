@@ -18,7 +18,10 @@ return new class extends Migration
             $table->decimal('amount_paid', 8, 2)->nullable(); // valor pago
             $table->string('payment_method')->nullable(); // forma de pagamento
             $table->string('status'); // status da entrega
-            $table->date('delivery_date')->nullable(); // data da entrega
+            $table->date('scheduled_delivery_date')->nullable(); // data de agendamento
+            $table->date('actual_delivery_date')->nullable(); // data de conclusão
+            $table->decimal('discount', 8, 2)->default(0); // desconto
+            $table->decimal('interest', 8, 2)->default(0); // juros
             $table->text('comments')->nullable(); // comentários
             $table->timestamps();
         });

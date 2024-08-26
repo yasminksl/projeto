@@ -45,7 +45,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['update:finalAmount']);
+const emit = defineEmits(['update:finalAmount', 'update:discount', 'update:interest']);
 
 let discount = ref();
 let interest = ref();
@@ -74,6 +74,8 @@ const finalAmountFormatted = computed(() => finalAmount.value);
 
 const updateAmount = () => {
     emit('update:finalAmount', finalAmountFormatted);
+    emit('update:discount', discount.value);
+    emit('update:interest', interest.value);
 };
 
 watch(() => props.selectedProducts, () => {

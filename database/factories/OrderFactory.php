@@ -21,14 +21,18 @@ class OrderFactory extends Factory
     {
 
         $client = Client::factory()->create();
+        $status = $this->faker->randomElement(['Concluído', 'Entrega Agendada', 'Entrega Não Agendada']);
 
         return [
             'client_id' => $client->id,
             'total_amount' => $this->faker->randomFloat(2, 10, 500),
             'amount_paid' => $this->faker->randomFloat(2, 0, 500),
             'payment_method' => $this->faker->randomElement(['Crédito', 'Débito', 'Dinheiro', 'Pix']),
-            'status' => $this->faker->randomElement(['Concluído', 'Entrega Agendada', 'Entrega Não Agendada']),
-            'delivery_date' => $this->faker->optional()->date(),
+            'status' => $status,
+            'scheduled_delivery_date' => $status === 'Entrega Agendada' || $status === 'Concluído' ? $this->faker->date() : null,
+            'actual_delivery_date' => $status === 'Concluído' ? $this->faker->date() : null,
+            'discount' => $this->faker->randomFloat(2, 0, 50), // desconto fictício
+            'interest' => $this->faker->randomFloat(2, 0, 50), // juros fictícios
             'comments' => $this->faker->optional()->text(),
         ];
     }

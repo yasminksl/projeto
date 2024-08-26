@@ -22,17 +22,19 @@ class OrderController extends Controller
     {
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection(Order::query()
-                ->with('client') // Eager load client relation
+                ->with('client')
                 ->when(FacadesRequest::input('search'), function ($query, $search) {
                     $query->whereHas('client', function ($query) use ($search) {
                         $query->where('name', 'like', "%{$search}%");
                     });
                 })
-                ->where('status', '!=', 'Concluído')
+                ->when(FacadesRequest::input('status'), function ($query, $status) {
+                    $query->where('status', $status);
+                })
                 ->latest()
                 ->paginate(10)
                 ->withQueryString()),
-            'filters' => FacadesRequest::only(['search']),
+            'filters' => FacadesRequest::only(['search', 'status']),
         ]);
     }
 

@@ -18,7 +18,10 @@ class Order extends Model
         'amount_paid',
         'payment_method',
         'status',
-        'delivery_date',
+        'scheduled_delivery_date',
+        'actual_delivery_date',
+        'discount',
+        'interest',
         'comments',
     ];
 
