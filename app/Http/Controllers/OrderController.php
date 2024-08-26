@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
 use Laravel\Prompts\Themes\Default\SelectPromptRenderer;
@@ -51,17 +52,16 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // Validação dos dados recebidos
         $attributes = $request->validate([
-            'client_id' => '',
-            'total_amount' => '',
-            'status' => '',
-            'delivery_date' => '',
-            'comments' => '',
-            'products' => '',
-            'products.*.id' => '',
-            'products.*.quantity' => '',
-            'products.*.price' => '',
+            'client_id' => 'required|exists:clients,id',
+            'total_amount' => 'required|numeric',
+            'status' => 'required|string',
+            'delivery_date' => 'nullable|date',
+            'comments' => 'nullable|string',
+            'products' => 'required|array',
+            'products.*.id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.price' => 'required|numeric',
         ]);
 
         $mappedProducts = array_map(function ($product) {

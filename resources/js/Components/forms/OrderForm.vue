@@ -25,7 +25,6 @@
                     </button>
                 </div>
 
-
                 <!-- Status -->
                 <StatusSelect v-model="form.status" :options="statusOptions" />
 
@@ -35,8 +34,8 @@
                         required />
                 </div>
 
-                <TextAreaField wrapperClass="mb-4" name="comments" id="comments" label="Comentários/Anotações (Opcional)"
-                    v-model="form.comments" />
+                <TextAreaField wrapperClass="mb-4" name="comments" id="comments"
+                    label="Comentários/Anotações (Opcional)" v-model="form.comments" />
 
                 <!-- Resumo do Pedido -->
                 <OrderSummary :selectedProducts="selectedProducts" @update:finalAmount="updateFinalAmount" />
@@ -47,9 +46,8 @@
                         class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                         Salvar Pedido
                     </button>
-                    <Link href="/orders"
-                        class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-                        Cancelar
+                    <Link href="/orders" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                    Cancelar
                     </Link>
                 </div>
             </form>
@@ -90,7 +88,7 @@ const statusOptions = [
     { value: 'Entrega Agendada', text: 'Entrega Agendada' }
 ];
 
-const emit = defineEmits('submit');
+const emit = defineEmits(['submit']);
 
 const selectedClient = ref(props.initialValues.client_id || null);
 const selectedProducts = ref(props.initialValues.products);
@@ -116,15 +114,31 @@ const updateProduct = (index, product) => {
     };
 };
 
-
 const updateFinalAmount = (amount) => {
     form.total_amount = amount;
 };
 
 const toast = useToast();
 
+const validateForm = () => {
+    const errors = [];
+
+    if (!form.client_id) errors.push('cliente');
+    if (!form.total_amount) errors.push('total do pedido');
+    if (!form.status) errors.push('status do pedido');
+    if (!form.products.length) errors.push('produtos');
+
+    return errors;
+};
+
 const submit = () => {
-    console.log('submit chamado');
+    const missingFields = validateForm();
+
+    if (missingFields.length > 0) {
+        toast.error(`Por favor, preencha as seguintes informações: ${missingFields.join(', ')}.`);
+        return;
+    }
+
     if (props.initialValues.id) {
         form.patch(`/orders/${props.initialValues.id}`);
         toast.success("Pedido atualizado com sucesso!");

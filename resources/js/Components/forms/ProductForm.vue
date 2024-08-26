@@ -60,7 +60,7 @@ let props = defineProps({
     }
 });
 
-let emit = defineEmits('submit');
+let emit = defineEmits(['submit']);
 
 let form = useForm(props.initialValues);
 

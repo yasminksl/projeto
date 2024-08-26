@@ -42,10 +42,10 @@ watch(internalValue, (newValue) => {
     emit('update:modelValue', newValue);
 });
 
-const computedOptions = computed(() => {
-    return props.options.map(option => ({
-        value: option.value,
-        text: option.text
-    }));
-});
+// const computedOptions = computed(() => {
+//     return props.options.map(option => ({
+//         value: option.value,
+//         text: option.text
+//     }));
+// });
 </script>

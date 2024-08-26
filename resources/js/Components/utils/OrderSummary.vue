@@ -18,11 +18,11 @@
                 </div>
                 <div class="flex justify-between items-center w-full" v-if="discount">
                     <p class="text-base dark:text-white leading-4 text-gray-800">Desconto</p>
-                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">- {{ discount }}</p>
+                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">- R${{ discount }}</p>
                 </div>
                 <div class="flex justify-between items-center w-full" v-if="interest">
                     <p class="text-base dark:text-white leading-4 text-gray-800">Juros</p>
-                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">+ {{ interest }}</p>
+                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">+ R${{ interest }}</p>
                 </div>
             </div>
             <div class="flex justify-between items-center w-full">
@@ -65,7 +65,6 @@ const finalAmount = computed(() => {
     const discountValue = parseFloat(discount.value) || 0;
     const interestValue = parseFloat(interest.value) || 0;
 
-    // Aplica o desconto e adiciona os juros
     const final = total - discountValue + interestValue;
 
     return final.toFixed(2);
@@ -73,7 +72,6 @@ const finalAmount = computed(() => {
 
 const finalAmountFormatted = computed(() => finalAmount.value);
 
-// Atualiza o valor final emitido para o componente pai
 const updateAmount = () => {
     emit('update:finalAmount', finalAmountFormatted);
 };
