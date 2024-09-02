@@ -272,4 +272,34 @@ class OrderController extends Controller
             $order->addHistory("Valores atualizados: " . implode('. ', $changes), 'teste');
         }
     }
+
+    public function updateProductQuantity(Request $request, Order $order, Product $product)
+    {
+        $validated = $request->validate([
+            'quantity' => 'required|integer|min:0'
+        ]);
+
+        $quantity = $validated['quantity'];
+
+        $currentQuantity = $order->products()->where('product_id', $product->id)->first()->pivot->quantity;
+
+        if ($quantity !== $currentQuantity) {
+            $order->products()->updateExistingPivot($product->id, ['quantity' => $quantity]);
+
+            $order->addHistory("Quantidade do produto {$product->name} atualizada de {$currentQuantity} para {$quantity}.", 'atualização');
+        }
+
+        $total = $order->calculateTotal();
+        $order->update(['total_amount' => $total]);
+    }
+
+    public function removeProduct(Order $order, Product $product)
+    {
+        $order->products()->detach($product->id);
+
+        $order->addHistory("Produto {$product->name} removido.", 'remoção');
+
+        $total = $order->calculateTotal();
+        $order->update(['total_amount' => $total]);
+    }
 }

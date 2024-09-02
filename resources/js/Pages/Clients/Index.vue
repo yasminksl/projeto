@@ -25,6 +25,7 @@
 
 <script setup>
 import { useSearch } from '@/Composables/useSearch';
+import { Link } from '@inertiajs/vue3';
 import Pagination from '@/Shared/Pagination.vue';
 import Layout from '@/Shared/Layout.vue';
 import SearchInput from '@/Components/inputs/SearchInput.vue';

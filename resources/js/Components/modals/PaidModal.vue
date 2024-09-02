@@ -46,8 +46,7 @@ const statusOptions = [
 
 const emit = defineEmits(['update:payment', 'update:isVisible']);
 
-// Initialize amountPaid to a default value
-const amountPaid = ref(0); // Default to an empty string or zero
+const amountPaid = ref(0);
 const paymentMethod = ref('');
 
 const closeModal = () => {
@@ -68,10 +67,9 @@ const submitForm = async () => {
                 paymentMethod: paymentMethod.value,
             });
             closeModal();
-            window.location.reload(); // Atualiza a página
+            window.location.reload();
         }
     } catch (error) {
-        console.error('Erro ao salvar:', error);
         alert('Erro ao salvar pagamento');
     }
 };
