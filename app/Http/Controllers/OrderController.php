@@ -7,6 +7,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as FacadesRequest;
@@ -57,37 +58,36 @@ class OrderController extends Controller
         $attributes = $request->validate([
             'client_id' => 'required|exists:clients,id',
             'total_amount' => 'required|numeric',
-            'status' => 'required|string',
-            'delivery_date' => 'nullable|date',
+            'status' => 'nullable|string',
+            'scheduled_delivery_date' => 'nullable|date',
             'comments' => 'nullable|string',
             'products' => 'required|array',
+            'discount' => 'nullable|numeric',
+            'interest' => 'nullable|numeric',
             'products.*.id' => 'required|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.price' => 'required|numeric',
         ]);
 
-        $mappedProducts = array_map(function ($product) {
-            return [
-                'product_id' => $product['id'],
-                'quantity' => $product['quantity'],
-                'price' => $product['price'],
-            ];
-        }, $attributes['products']);
-
         $order = Order::create([
             'client_id' => $attributes['client_id'],
             'total_amount' => $attributes['total_amount'],
             'status' => $attributes['status'],
-            'delivery_date' => $attributes['delivery_date'],
+            'scheduled_delivery_date' => $attributes['scheduled_delivery_date'],
             'comments' => $attributes['comments'],
+            'discount' => $attributes['discount'] ?? 0,
+            'interest' => $attributes['interest'] ?? 0,
         ]);
 
-        foreach ($mappedProducts as $productData) {
-            $order->products()->attach($productData['product_id'], [
-                'quantity' => $productData['quantity'],
-                'price' => $productData['price']
+        foreach ($attributes['products'] as $product) {
+            $order->products()->attach($product['id'], [
+                'quantity' => $product['quantity'],
+                'price' => $product['price']
             ]);
         }
+
+        $total = $order->calculateTotal();
+        $order->update(['total_amount' => $total]);
 
         sleep(2);
 
@@ -97,19 +97,26 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show($id)
     {
+        $order = Order::with('products', 'client', 'histories')->findOrFail($id);
+
         return Inertia::render('Orders/Show', [
             'order' => $order,
+            'orderHistories' => $order->histories,
+            'products' => Product::all()->map->only(['id', 'name', 'price'])->values(),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Order $order)
     {
-        //
+        return Inertia::render('Orders/Edit', [
+            'order' => $order,
+            'products' => Product::all()->map->only(['id', 'name', 'price'])->values(),
+        ]);
     }
 
     /**
@@ -126,5 +133,143 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function updateDates(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'scheduledDeliveryDate' => 'nullable|date',
+            'actualDeliveryDate' => 'nullable|date',
+        ]);
+
+        $order = Order::findOrFail($request->order_id);
+
+        $currentScheduledDeliveryDate = $order->scheduled_delivery_date ? Carbon::parse($order->scheduled_delivery_date) : null;
+        $currentActualDeliveryDate = $order->actual_delivery_date ? Carbon::parse($order->actual_delivery_date) : null;
+
+        $newScheduledDeliveryDate = $request->scheduledDeliveryDate ? Carbon::parse($request->scheduledDeliveryDate) : null;
+        $newActualDeliveryDate = $request->actualDeliveryDate ? Carbon::parse($request->actualDeliveryDate) : null;
+
+        $dateChanges = [];
+
+        if ($currentScheduledDeliveryDate && $newScheduledDeliveryDate && $currentScheduledDeliveryDate->format('d/m/Y') !== $newScheduledDeliveryDate->format('d/m/Y')) {
+            $dateChanges[] = "Data de entrega agendada: {$currentScheduledDeliveryDate->format('d/m/Y')} para {$newScheduledDeliveryDate->format('d/m/Y')}";
+        }
+
+        if ($currentActualDeliveryDate && $newActualDeliveryDate && $currentActualDeliveryDate->format('d/m/Y') !== $newActualDeliveryDate->format('d/m/Y')) {
+            $dateChanges[] = "Data de entrega concluída: {$currentActualDeliveryDate->format('d/m/Y')} para {$newActualDeliveryDate->format('d/m/Y')}";
+        }
+
+        $order->scheduled_delivery_date = $request->scheduledDeliveryDate;
+        $order->actual_delivery_date = $request->actualDeliveryDate;
+        $order->save();
+
+        foreach ($dateChanges as $change) {
+            $order->addHistory($change, 'teste');
+        }
+
+        $order->updateDeliveryStatus();
+    }
+
+    public function updatePayment(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'amountPaid' => 'required|numeric|min:0',
+            'paymentMethod' => 'required|string',
+        ]);
+
+        $order = Order::findOrFail($request->order_id);
+
+        $currentAmountPaid = $order->amount_paid ?? 0;
+
+        $paymentChange = "Valor pago: de R$ {$currentAmountPaid} para R$ " . ($currentAmountPaid + $request->amountPaid);
+        $methodChange = "Método de pagamento: {$request->paymentMethod}";
+
+        $order->amount_paid += $request->amountPaid;
+        $order->payment_method = $request->paymentMethod;
+        $order->save();
+
+        $total = $order->calculateTotal();
+        $order->update(['total_amount' => $total]);
+
+        $order->addHistory("Pagamento atualizado: {$paymentChange}. {$methodChange}", 'teste');
+    }
+
+    public function updateProducts(Request $request)
+    {
+        $attributes = $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'products' => 'required|array',
+            'products.*.id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.price' => 'required|numeric',
+        ]);
+
+        $order = Order::findOrFail($request->order_id);
+
+        $syncData = [];
+        $historyChanges = [];
+
+        foreach ($attributes['products'] as $productData) {
+            $product = Product::find($productData['id']);
+            $syncData[$productData['id']] = [
+                'quantity' => $productData['quantity'],
+                'price' => $productData['price'],
+            ];
+
+            $historyChanges[] = "Produto: {$product->name}, Quantidade: {$productData['quantity']}, Preço Unitário: {$productData['price']}, Preço Total: " . ($productData['price'] * $productData['quantity']);
+        }
+
+        $order->products()->sync($syncData, false);
+
+        $total = $order->calculateTotal();
+        $order->update(['total_amount' => $total]);
+
+        $historyText = implode('; ', $historyChanges);
+        $order->addHistory("Produtos adicionados: $historyText", 'teste');
+    }
+
+    public function updateOrderValues(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'discount' => 'nullable|numeric|min:0',
+            'interest' => 'nullable|numeric|min:0',
+            'amountPaid' => 'nullable|numeric|min:0',
+        ]);
+
+        $order = Order::findOrFail($request->order_id);
+
+        $currentDiscount = $order->discount ?? 0;
+        $currentInterest = $order->interest ?? 0;
+        $currentAmountPaid = $order->amount_paid ?? 0;
+
+        $changes = [];
+
+        if ($request->filled('discount') && $request->discount != $currentDiscount) {
+            $changes[] = "Desconto: de R$ {$currentDiscount} para R$ {$request->discount}";
+            $order->discount = $request->discount;
+        }
+
+        if ($request->filled('interest') && $request->interest != $currentInterest) {
+            $changes[] = "Juros: de R$ {$currentInterest} para R$ {$request->interest}";
+            $order->interest = $request->interest;
+        }
+
+        if ($request->filled('amountPaid') && $request->amountPaid != $currentAmountPaid) {
+            $changes[] = "Valor pago: de R$ {$currentAmountPaid} para R$ {$request->amountPaid}";
+            $order->amount_paid = $request->amountPaid;
+        }
+
+        $order->save();
+
+        $total = $order->calculateTotal();
+        $order->update(['total_amount' => $total]);
+
+        if (!empty($changes)) {
+            $order->addHistory("Valores atualizados: " . implode('. ', $changes), 'teste');
+        }
     }
 }

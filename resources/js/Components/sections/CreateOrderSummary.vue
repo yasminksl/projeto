@@ -13,21 +13,21 @@
         <div class="flex flex-col px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-100 rounded space-y-6">
             <div class="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
                 <div class="flex justify-between w-full">
-                    <p class="text-base dark:text-white leading-4 text-gray-800">Subtotal</p>
-                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">R$ {{ totalAmountFormatted }}</p>
+                    <p class="text-base leading-4 text-gray-800">Subtotal</p>
+                    <p class="text-base leading-4 text-gray-600">R$ {{ totalAmountFormatted }}</p>
                 </div>
                 <div class="flex justify-between items-center w-full" v-if="discount">
-                    <p class="text-base dark:text-white leading-4 text-gray-800">Desconto</p>
-                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">- R${{ discount }}</p>
+                    <p class="text-base leading-4 text-gray-800">Desconto</p>
+                    <p class="text-base leading-4 text-gray-600">- R${{ discount }}</p>
                 </div>
                 <div class="flex justify-between items-center w-full" v-if="interest">
-                    <p class="text-base dark:text-white leading-4 text-gray-800">Juros</p>
-                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">+ R${{ interest }}</p>
+                    <p class="text-base leading-4 text-gray-800">Juros</p>
+                    <p class="text-base leading-4 text-gray-600">+ R${{ interest }}</p>
                 </div>
             </div>
             <div class="flex justify-between items-center w-full">
-                <p class="text-base dark:text-white font-semibold leading-4 text-gray-800">Total</p>
-                <p class="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">R$ {{ finalAmountFormatted
+                <p class="text-base font-semibold leading-4 text-gray-800">Total</p>
+                <p class="text-base font-semibold leading-4 text-gray-600">R$ {{ finalAmountFormatted
                     }}</p>
             </div>
         </div>

@@ -19,9 +19,8 @@ class OrderHistoryFactory extends Factory
     {
         return [
             'order_id' => Order::inRandomOrder()->first()->id,
-            'status_before' => $this->faker->word,
-            'status_after' => $this->faker->word,
-            'changed_by' => $this->faker->name, 
+            'description' => $this->faker->word,
+            'changed_by' => $this->faker->name,
         ];
     }
 }

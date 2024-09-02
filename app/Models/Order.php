@@ -41,4 +41,37 @@ class Order extends Model
             ->withPivot('quantity', 'price')
             ->withTimestamps();
     }
+
+    public function updateDeliveryStatus()
+    {
+        if (is_null($this->scheduled_delivery_date) && is_null($this->actual_delivery_date)) {
+            $this->status = 'Entrega Não Agendada';
+        } elseif (!is_null($this->scheduled_delivery_date) && is_null($this->actual_delivery_date)) {
+            $this->status = 'Entrega Agendada';
+        } elseif (is_null($this->scheduled_delivery_date) && !is_null($this->actual_delivery_date)) {
+            $this->scheduled_delivery_date = $this->actual_delivery_date;
+            $this->status = 'Concluído';
+        } elseif (!is_null($this->scheduled_delivery_date) && !is_null($this->actual_delivery_date)) {
+            $this->status = 'Concluído';
+        }
+
+        $this->save();
+    }
+
+    public function addHistory($description, $changedBy)
+    {
+        $this->histories()->create([
+            'description' => $description,
+            'changed_by' => $changedBy,
+        ]);
+    }
+
+    public function calculateTotal()
+    {
+        $totalProducts = $this->products->sum(function ($product) {
+            return $product->pivot->quantity * $product->pivot->price;
+        });
+
+        return $totalProducts - $this->discount + $this->interest;
+    }
 }

@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('order_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->text('status_before')->nullable();
-            $table->text('status_after')->nullable();
+            $table->text('description')->nullable();
             $table->text('changed_by')->nullable();
             $table->timestamps();
         });

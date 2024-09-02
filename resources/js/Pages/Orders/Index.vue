@@ -31,11 +31,12 @@
 <script setup>
 import Layout from '@/Shared/Layout.vue';
 import SearchInput from '@/Components/inputs/SearchInput.vue';
-import StatusFilter from '@/Components/sections/StatusFilter.vue';
-import OrderTable from '@/Components/sections/OrderTable.vue';
+import StatusFilter from '@/Components/filters/StatusFilter.vue';
+import OrderTable from '@/Components/tables/OrderTable.vue';
 import { ref } from 'vue';
 import { useSearch } from '@/Composables/useSearch';
 import { router } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
     orders: Object,

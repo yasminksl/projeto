@@ -1,7 +1,9 @@
 <template>
-    <Head title="Criar Novo Pedido"/>
+
+    <Head title="Criar Novo Pedido" />
     <Layout title="Novo Pedido">
-        <OrderForm :clients="props.clients.data" :products="props.products" :initialValues="initialValues" @submit="submit"/>
+        <OrderForm :clients="props.clients.data" :products="props.products" :initialValues="initialValues"
+            @submit="submit" />
     </Layout>
 </template>
 
@@ -19,9 +21,11 @@ let initialValues = {
     'client_id': '',
     'total_amount': '',
     'status': '',
-    'delivery_date': '',
+    'scheduled_delivery_date': '',
     'comments': '',
-    'products': []
+    'products': [],
+    'discount': '',
+    'interest': ''
 };
 
 let form = useForm(initialValues);

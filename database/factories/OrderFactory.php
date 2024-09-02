@@ -19,27 +19,33 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-
         $client = Client::factory()->create();
-        $status = $this->faker->randomElement(['Concluído', 'Entrega Agendada', 'Entrega Não Agendada']);
+
+        $scheduledDeliveryDate = $this->faker->optional()->date();
+        $actualDeliveryDate = $this->faker->optional()->date();
+
+        if ($actualDeliveryDate && !$scheduledDeliveryDate) {
+            $scheduledDeliveryDate = $actualDeliveryDate;
+        }
 
         return [
             'client_id' => $client->id,
             'total_amount' => $this->faker->randomFloat(2, 10, 500),
             'amount_paid' => $this->faker->randomFloat(2, 0, 500),
             'payment_method' => $this->faker->randomElement(['Crédito', 'Débito', 'Dinheiro', 'Pix']),
-            'status' => $status,
-            'scheduled_delivery_date' => $status === 'Entrega Agendada' || $status === 'Concluído' ? $this->faker->date() : null,
-            'actual_delivery_date' => $status === 'Concluído' ? $this->faker->date() : null,
-            'discount' => $this->faker->randomFloat(2, 0, 50), // desconto fictício
-            'interest' => $this->faker->randomFloat(2, 0, 50), // juros fictícios
+            'scheduled_delivery_date' => $scheduledDeliveryDate,
+            'actual_delivery_date' => $actualDeliveryDate,
+            'discount' => $this->faker->randomFloat(2, 0, 50),
+            'interest' => $this->faker->randomFloat(2, 0, 50),
             'comments' => $this->faker->optional()->text(),
         ];
     }
 
     public function configure()
     {
-        return $this->afterCreating(function (Order $order) {
+        return $this->afterMaking(function (Order $order) {
+            $order->updateDeliveryStatus();
+        })->afterCreating(function (Order $order) {
             $products = Product::inRandomOrder()->take(3)->get();
 
             foreach ($products as $product) {

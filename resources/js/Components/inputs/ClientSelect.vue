@@ -45,7 +45,7 @@ import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
     clients: Array,
-    modelValue: [String, Number] // Pode ser String ou Number dependendo de como você armazena os IDs
+    modelValue: [String, Number]
 });
 
 const emit = defineEmits(['update:modelValue']);

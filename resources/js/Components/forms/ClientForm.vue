@@ -3,65 +3,34 @@
 
         <div class="space-y-12">
 
-            <div class="border-b border-gray-900/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-gray-900">Dados</h2>
-                <div class="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <!-- Campo de Nome Completo -->
-                    <InputField wrapperClass="sm:col-span-4" name="name" id="name" label="Nome Completo"
-                        v-model="form.name" required />
-                    <div v-if="form.errors.name" class="text-red-500 text-xs sm:col-start-1">
-                        O nome é obrigatório
-                    </div>
-                </div>
-            </div>
+            <FormSection title="Dados">
+                <!-- Campo de Nome Completo -->
+                <InputField wrapperClass="sm:col-span-4" name="name" id="name" label="Nome Completo" v-model="form.name"
+                    required />
+            </FormSection>
 
-            <div class="border-b border-gray-900/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-gray-900">Endereço</h2>
-                <div class="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <!-- Campo de CEP -->
-                    <InputField wrapperClass="mt-3 sm:col-span-2" name="postal_code" id="postal_code"
-                        autocomplete="postal-code" label="CEP" v-model="form.postal_code" @blur="handlePostalCodeBlur"
-                        required />
-                    <div v-if="form.errors.postal_code" class="text-red-500 text-xs sm:col-start-1">
-                        O CEP é obrigatório
-                    </div>
+            <FormSection title="Endereço">
+                <!-- Campo de CEP -->
+                <InputField wrapperClass="mt-3 sm:col-span-2" name="postal_code" id="postal_code"
+                    autocomplete="postal-code" label="CEP" v-model="form.postal_code" @blur="handlePostalCodeBlur"
+                    required />
 
-                    <!-- Campo de Logradouro -->
-                    <InputField wrapperClass="mt-3 sm:col-span-4 sm:col-start-1" name="street_address"
-                        id="street_address" autocomplete="street-address" label="Logradouro"
-                        v-model="form.street_address" required />
+                <!-- Campo de Logradouro -->
+                <InputField wrapperClass="mt-3 sm:col-span-4 sm:col-start-1" name="street_address" id="street_address"
+                    autocomplete="street-address" label="Logradouro" v-model="form.street_address" required />
 
-                    <!-- Campo de Número -->
-                    <InputField wrapperClass="mt-3 sm:col-span-1" name="address_number" id="address_number"
-                        label="Número" v-model="form.address_number" required />
+                <!-- Campo de Número -->
+                <InputField wrapperClass="mt-3 sm:col-span-1" name="address_number" id="address_number" label="Número"
+                    v-model="form.address_number" required />
 
-                    <div class="sm:col-span-5 sm:col-start-1">
-                        <div v-if="form.errors.street_address" class="text-red-500 text-xs">
-                            O logradouro é obrigatório
-                        </div>
-                        <div v-if="form.errors.address_number" class="text-red-500 text-xs">
-                            O número do endereço é obrigatório
-                        </div>
-                    </div>
+                <!-- Campo de Bairro -->
+                <InputField wrapperClass="mt-3 sm:col-span-2 sm:col-start-1" name="neighborhood" id="neighborhood"
+                    label="Bairro" v-model="form.neighborhood" required />
 
-                    <!-- Campo de Bairro -->
-                    <InputField wrapperClass="mt-3 sm:col-span-2 sm:col-start-1" name="neighborhood" id="neighborhood"
-                        label="Bairro" v-model="form.neighborhood" required />
-
-                    <!-- Campo de Cidade -->
-                    <InputField wrapperClass="mt-3 sm:col-span-2" name="city" id="city" label="Cidade"
-                        v-model="form.city" required />
-
-                    <div class="sm:col-span-5 sm:col-start-1">
-                        <div v-if="form.errors.neighborhood" class="text-red-500 text-xs">
-                            O bairro é obrigatório
-                        </div>
-                        <div v-if="form.errors.city" class="text-red-500 text-xs">
-                            A cidade é obrigatória
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <!-- Campo de Cidade -->
+                <InputField wrapperClass="mt-3 sm:col-span-2" name="city" id="city" label="Cidade" v-model="form.city"
+                    required />
+            </FormSection>
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
@@ -77,10 +46,11 @@
 </template>
 
 <script setup>
-import InputField from '@/Components/inputs/InputField.vue';
 import { useCep } from '@/Composables/useCep';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { useToast } from 'vue-toastification';
+import InputField from '@/Components/inputs/InputField.vue';
+import FormSection from './FormSection.vue';
 
 let props = defineProps({
     initialValues: {
@@ -100,6 +70,8 @@ let emit = defineEmits(['submit', 'cancel']);
 
 let form = useForm(props.initialValues);
 
+const toast = useToast();
+
 let { address, error, fetchAddress } = useCep();
 
 let handlePostalCodeBlur = () => {
@@ -110,13 +82,32 @@ let handlePostalCodeBlur = () => {
             form.neighborhood = address.value.neighborhood;
             form.postal_code = address.value.postal_code;
         } else {
-            alert(error.value);
+            toast.error(error.value);
         }
     });
 };
-const toast = useToast();
 
-let submit = () => {
+const validateForm = () => {
+    const errors = {};
+
+    if (!form.name) errors.name = 'O nome é obrigatório';
+    if (!form.postal_code) errors.postal_code = 'O CEP é obrigatório';
+    if (!form.street_address) errors.street_address = 'O logradouro é obrigatório';
+    if (!form.address_number) errors.address_number = 'O número é obrigatório';
+    if (!form.neighborhood) errors.neighborhood = 'O bairro é obrigatório';
+    if (!form.city) errors.city = 'A cidade é obrigatória';
+
+    return errors;
+};
+
+const submit = () => {
+    const errors = validateForm();
+
+    if (Object.keys(errors).length > 0) {
+        Object.values(errors).forEach(errorMessage => toast.error(errorMessage));
+        return;
+    }
+
     if (props.initialValues.id) {
         form.patch(`/clients/${props.initialValues.id}`);
         toast.success("Cliente atualizado com sucesso!");
@@ -126,4 +117,5 @@ let submit = () => {
     }
     emit('submit');
 };
+
 </script>

@@ -13,6 +13,11 @@ use Inertia\Inertia;
     Route::get('/orders/create', [OrderController::class, 'create']);
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::post('/orders/update-dates', [OrderController::class, 'updateDates']);
+    Route::post('/orders/update-payment', [OrderController::class, 'updatePayment']);
+    Route::get('/orders/{order}/edit', [OrderController::class, 'edit']);
+    Route::post('/orders/update-products', [OrderController::class, 'updateProducts']);
+    Route::post('/orders/update-order-values', [OrderController::class, 'updateOrderValues']);
 
     Route::get('/clients', [ClientController::class, 'index']);
     Route::get('/clients/create', [ClientController::class, 'create']);
