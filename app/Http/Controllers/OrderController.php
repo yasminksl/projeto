@@ -24,18 +24,26 @@ class OrderController extends Controller
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection(Order::query()
                 ->with('client')
-                ->when(FacadesRequest::input('search'), function ($query, $search) {
-                    $query->whereHas('client', function ($query) use ($search) {
-                        $query->where('name', 'like', "%{$search}%");
-                    });
+                ->when(FacadesRequest::input('client'), function ($query, $clientId) {
+                    $query->where('client_id', $clientId);
                 })
                 ->when(FacadesRequest::input('status'), function ($query, $status) {
                     $query->where('status', $status);
                 })
+                ->when(FacadesRequest::input('scheduled_delivery_date'), function ($query, $date) {
+                    $query->whereDate('scheduled_delivery_date', $date);
+                })
+                ->when(FacadesRequest::input('actual_delivery_date'), function ($query, $date) {
+                    $query->whereDate('actual_delivery_date', $date);
+                })
+                ->when(FacadesRequest::input('created_at'), function ($query, $date) {
+                    $query->whereDate('created_at', $date);
+                })
                 ->latest()
                 ->paginate(10)
                 ->withQueryString()),
-            'filters' => FacadesRequest::only(['search', 'status']),
+            'filters' => FacadesRequest::only(['client', 'status', 'scheduled_delivery_date', 'actual_delivery_date', 'created_at']),
+            'clients' => ClientResource::collection(Client::all()),
         ]);
     }
 

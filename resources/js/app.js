@@ -8,6 +8,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import NProgress from 'nprogress';
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const appName = import.meta.env.VITE_APP_NAME || 'CRM';
 
