@@ -24,9 +24,6 @@ const props = defineProps({
 
 const emit = defineEmits(['order-click']);
 
-const { formatDate } = useDateUtils();
-// const { statusClasses, statusIndicatorClasses } = useStatusUtils();
-
 const showScheduledDateColumn = computed(() => props.orders.data.some(order => order.scheduled_delivery_date));
 const showDeliveryDateColumn = computed(() => props.orders.data.some(order => order.actual_delivery_date));
 </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ClientResource;
+use App\Http\Resources\OrderResource;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as FacadesRequest;
@@ -59,10 +60,23 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        $status = request()->input('status');
+
+        $orders = $client->orders()
+            ->when($status, function ($query, $status) {
+                $query->where('status', $status);
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
         return Inertia::render('Clients/Show', [
-            'client' => ClientResource::make($client)
+            'client' => ClientResource::make($client),
+            'orders' => OrderResource::collection($orders),
+            'filters' => ['status' => $status],
         ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

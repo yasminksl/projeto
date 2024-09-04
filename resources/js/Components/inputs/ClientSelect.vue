@@ -67,12 +67,11 @@ const toggleDropdown = () => {
 
 const selectClient = (client) => {
     selectedClient.value = client;
-    emit('update:modelValue', client.id); // Emitindo o ID do cliente
+    emit('update:modelValue', client.id);
     searchTerm.value = '';
     isDropdownOpen.value = false;
 };
 
-// Sincroniza o valor inicial com o dropdown
 watch(() => props.modelValue, (newValue) => {
     selectedClient.value = props.clients.find(client => client.id === newValue) || null;
 });

@@ -1,6 +1,8 @@
 <template>
-    <div :class="statusClasses">
-        <div :class="indicatorClasses"></div>
+    <div class="w-max">
+        <div :class="statusClasses">
+            <span class="">{{ status }}</span>
+        </div>
     </div>
 </template>
 
@@ -12,16 +14,9 @@ let props = defineProps({
 });
 
 const statusClasses = computed(() => ({
-    'flex-none rounded-full p-1': true,
-    'bg-red-500/20': props.status === 'Entrega Não Agendada',
-    'bg-yellow-500/20': props.status === 'Entrega Agendada',
-    'bg-green-500/20': props.status === 'Concluído'
-}));
-
-const indicatorClasses = computed(() => ({
-    'h-1.5 w-1.5 rounded-full': true,
-    'bg-red-500': props.status === 'Entrega Não Agendada',
-    'bg-yellow-500': props.status === 'Entrega Agendada',
-    'bg-green-500': props.status === 'Concluído'
+    'relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap': true,
+    'text-red-900 bg-red-500/20': props.status === 'Entrega Não Agendada' || props.status === 'Não Pago',
+    'text-yellow-900 bg-yellow-500/20': props.status === 'Entrega Agendada',
+    'text-green-900 bg-green-500/20': props.status === 'Concluído' || props.status === 'Pago',
 }));
 </script>

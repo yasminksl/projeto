@@ -5,7 +5,7 @@
             <div class="fixed inset-0 flex items-center justify-center">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
                     <h2 class="text-lg font-semibold dark:text-white">Adicionar Pagamento</h2>
-                    <form @submit.prevent="submitForm">
+                    <form @submit.prevent="saveOrderPayment">
                         <div class="mt-4">
                             <label for="amount_paid" class="block text-sm font-medium dark:text-white">Valor
                                 pago</label>
@@ -29,7 +29,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { router } from '@inertiajs/vue3';
+import { useToast } from 'vue-toastification';
 import StatusSelect from '../inputs/StatusSelect.vue';
 
 const props = defineProps({
@@ -53,24 +54,32 @@ const closeModal = () => {
     emit('update:isVisible', false);
 };
 
-const submitForm = async () => {
+const toast = useToast();
+
+const saveOrderPayment = async () => {
     try {
-        const response = await axios.post('/orders/update-payment', {
+        router.post('/orders/update-payment', {
             order_id: props.orderId,
             amountPaid: amountPaid.value,
             paymentMethod: paymentMethod.value,
-        });
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                emit('update:payment', {
+                    amountPaid: amountPaid.value,
+                    paymentMethod: paymentMethod.value,
+                });
 
-        if (response.status === 200) {
-            emit('update:payment', {
-                amountPaid: amountPaid.value,
-                paymentMethod: paymentMethod.value,
-            });
-            closeModal();
-            window.location.reload();
-        }
+                closeModal();
+                router.reload();
+                toast.success("Pagamento adicionado com sucesso!");
+            },
+            onError: (errors) => {
+                toast.error('Erro ao adicionar pagamento');
+            }
+        });
     } catch (error) {
-        alert('Erro ao salvar pagamento');
+        console.error('Erro ao salvar:', error);
     }
 };
 </script>

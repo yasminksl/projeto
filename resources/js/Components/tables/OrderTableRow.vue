@@ -12,7 +12,6 @@
             </td>
             <td class="px-4 py-2 text-sm text-gray-500 flex items-center gap-x-1.5">
                 <StatusIndicator :status="order.status"/>
-                {{ order.status }}
             </td>
         </tr>
     </tbody>

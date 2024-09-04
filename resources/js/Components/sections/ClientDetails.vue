@@ -1,7 +1,10 @@
 <template>
     <div
         class="bg-gray-50 w-full xl:w-96 flex justify-between items-center md:items-start px-4 py-6 md:p-6 xl:p-8 flex-col">
-        <h3 class="text-xl font-semibold leading-5 text-gray-800">Cliente</h3>
+        <div class="flex justify-between items-center w-full">
+            <h3 class="text-xl font-semibold leading-5 text-gray-800">Cliente</h3>
+            <EditButton @click="openModalOrderClient" />
+        </div>
         <div
             class="flex flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0">
             <div class="flex flex-col justify-start items-start flex-shrink-0">
@@ -18,11 +21,9 @@
                     class="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
                     <div
                         class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
-                        <p
-                            class="text-base font-semibold leading-4 text-center md:text-left text-gray-800">
+                        <p class="text-base font-semibold leading-4 text-center md:text-left text-gray-800">
                             Endereço</p>
-                        <p
-                            class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">
+                        <p class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">
                             {{
                                 orderClient.street_address }}, nº {{ orderClient.address_number }}, {{
                                 orderClient.neighborhood }}, {{ orderClient.city }}, CEP: {{
@@ -39,13 +40,40 @@
             </div>
         </div>
     </div>
+
+    <EditOrderClientModal :orderId="orderId" :isVisible="isModalOrderClientVisible" :orderClient="orderClient"
+        @update:isVisible="isModalOrderClientVisible = $event" @update:order-client="updateOrderClient"
+        :clients="clients" />
 </template>
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import EditButton from '../actions/EditButton.vue';
+import EditOrderClientModal from '../modals/EditOrderClientModal.vue';
 
 let props = defineProps({
-    orderClient: Object
-})
+    orderClient: Object,
+    clients: Array,
+    orderId: [String, Number],
+});
+
+const emit = defineEmits(['update:order-client']);
+
+const isModalOrderClientVisible = ref(false);
+
+const openModalOrderClient = () => {
+    isModalOrderClientVisible.value = true;
+};
+
+const closeModalOrderClient = () => {
+    isModalOrderClientVisible.value = false;
+};
+
+const updateOrderClient = (client) => {
+    props.orderClient.id = client;
+
+    closeModalOrderClient();
+};
 
 </script>

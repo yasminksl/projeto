@@ -7,7 +7,7 @@
             <div class="fixed inset-0 flex items-center justify-center">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
                     <h2 class="text-lg font-semibold dark:text-white">Adicionar produtos</h2>
-                    <form @submit.prevent="submitForm">
+                    <form @submit.prevent="saveOrderProducts">
                         <div class="mb-4 mt-4">
                             <label for="products"
                                 class="block text-sm font-medium leading-6 text-gray-900">Produtos</label>
@@ -81,11 +81,11 @@ const updateProduct = (index, product) => {
     };
 };
 
-const submitForm = async () => {
+const saveOrderProducts = async () => {
     try {
         const response = await axios.post('/orders/update-products', {
             order_id: props.orderId,
-            products: selectedProducts.value, // Enviar produtos com `id`, `quantity`, e `price`
+            products: selectedProducts.value,
         });
 
         if (response.status === 200) {

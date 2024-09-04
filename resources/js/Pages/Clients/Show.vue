@@ -1,13 +1,9 @@
 <template>
 
     <Head :title="client.data.name" />
-    <Layout :title="`Visualizando cliente #${client.data.id}`">
+    <Layout :title="`Visualizando cliente #${client.data.id}`" class="justify start space-x-5">
         <template #headerContent>
-            <div>
-                <Link :href="`/clients/${client.data.id}/edit`"
-                    class="rounded-md bg-blue-600 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                Editar</Link>
-            </div>
+            <EditButton @click="goToEditClient(client.data.id)" />
         </template>
 
         <div>
@@ -28,21 +24,38 @@
                 </dl>
             </div>
         </div>
+
+        <OrderClientTable :orders="orders.data" :links="orders.meta.links" @status-change="setStatusFilter" />
+
         <div class="mt-5 ml-1">
             <Link href="/clients" class="text-indigo-600 hover:text-indigo-900">
-                Voltar
+            Voltar
             </Link>
         </div>
     </Layout>
-
 </template>
 
 <script setup>
 import Layout from '@/Shared/Layout.vue';
 import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { router } from '@inertiajs/vue3';
+import OrderClientTable from '@/Components/tables/OrderClientTable.vue';
+import EditButton from '@/Components/actions/EditButton.vue';
 
 let props = defineProps({
-    client: Object
+    client: Object,
+    orders: Object,
+    filters: Object,
 });
 
+const selectedStatus = ref(props.filters.status || '');
+
+const setStatusFilter = (status) => {
+    selectedStatus.value = status;
+};
+
+const goToEditClient = (id) => {
+    router.get(`/clients/${id}/edit`);
+};
 </script>

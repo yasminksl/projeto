@@ -22,6 +22,7 @@ class ClientResource extends JsonResource
             'address_number' => $this->address_number,
             'city' => $this->city,
             'neighborhood' => $this->neighborhood,
+            'orders' => OrderResource::collection($this->whenLoaded('orders')),
         ];
     }
 }

@@ -5,7 +5,7 @@
             <div class="fixed inset-0 flex items-center justify-center">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
                     <h2 class="text-lg font-semibold dark:text-white">Editar Valores</h2>
-                    <form @submit.prevent="submitForm">
+                    <form @submit.prevent="saveOrderValues">
                         <div class="mt-4">
                             <label for="discount" class="block text-sm font-medium dark:text-white">Desconto</label>
                             <input type="number" v-model.number="discount" id="discount" placeholder="Digite o valor"
@@ -40,7 +40,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { router } from '@inertiajs/vue3';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
     isVisible: Boolean,
@@ -57,27 +58,35 @@ const closeModal = () => {
     emit('update:isVisible', false);
 };
 
-const submitForm = async () => {
+const toast = useToast();
+
+const saveOrderValues = async () => {
     try {
-        const response = await axios.post('/orders/update-order-values', {
+        router.post('/orders/update-order-values', {
             order_id: props.order.id,
             discount: discount.value,
             interest: interest.value,
             amountPaid: amountPaid.value,
-        });
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                emit('update:order-values', {
+                    discount: discount.value,
+                    interest: interest.value,
+                    amountPaid: amountPaid.value,
+                });
 
-        if (response.status === 200) {
-            emit('update:order-values', {
-                discount: discount.value,
-                interest: interest.value,
-                amountPaid: amountPaid.value,
-            });
-            closeModal();
-            window.location.reload();
-        }
+                closeModal();
+
+                toast.success("Valores atualizados com sucesso");
+            },
+            onError: (errors) => {
+                toast.error('Erro ao salvar valores');
+            }
+        });
     } catch (error) {
         console.error('Erro ao salvar:', error);
-        alert('Erro ao salvar valores');
     }
 };
 </script>

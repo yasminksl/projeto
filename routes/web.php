@@ -13,11 +13,14 @@ Route::get('/orders', [OrderController::class, 'index']);
 Route::get('/orders/create', [OrderController::class, 'create']);
 Route::post('/orders', [OrderController::class, 'store']);
 Route::get('/orders/{order}', [OrderController::class, 'show']);
+Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
+
 Route::post('/orders/update-dates', [OrderController::class, 'updateDates']);
 Route::post('/orders/update-payment', [OrderController::class, 'updatePayment']);
-Route::get('/orders/{order}/edit', [OrderController::class, 'edit']);
-Route::post('/orders/update-products', [OrderController::class, 'updateProducts']);
 Route::post('/orders/update-order-values', [OrderController::class, 'updateOrderValues']);
+Route::post('/orders/update-order-client', [OrderController::class, 'updateOrderClient']);
+
+Route::post('/orders/update-products', [OrderController::class, 'updateProducts']);
 Route::patch('/orders/{order}/products/{product}', [OrderController::class, 'updateProductQuantity']);
 Route::delete('/orders/{order}/products/{product}', [OrderController::class, 'removeProduct']);
 

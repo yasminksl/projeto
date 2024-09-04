@@ -1,6 +1,6 @@
 <template>
     <button
-        class="flex p-1.5 bg-gray-400 rounded-xl hover:rounded-3xl hover:bg-black transition-all duration-300 text-white">
+        class="flex p-1.5 rounded-xl hover:rounded-3xl transition-all duration-300 text-white" :class="background">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
             stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -10,5 +10,12 @@
 </template>
 
 <script setup>
+
+let props = defineProps({
+    background: {
+        type: String,
+        default: 'bg-gray-400 hover:bg-black'
+    }
+});
 
 </script>

@@ -65,6 +65,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 import cloneDeep from 'lodash/cloneDeep';
 import { useToast } from 'vue-toastification';
+import { router } from '@inertiajs/vue3';
 import AddProductModal from '../modals/AddProductModal.vue';
 import AddButton from '../actions/AddButton.vue';
 import EditButton from '../actions/EditButton.vue';
@@ -99,8 +100,9 @@ const startEditing = () => {
 };
 
 const cancelEditing = () => {
-    props.order.products = cloneDeep(originalProducts.value);
-    isEditing.value = false;
+    // props.order.products = cloneDeep(originalProducts.value);
+    // isEditing.value = false;
+    window.location.reload();
 };
 
 const incrementQuantity = (product) => {
@@ -138,13 +140,20 @@ const saveChanges = async () => {
 };
 
 const removeProduct = async (product) => {
+    const confirmed = confirm('Você tem certeza que deseja remover este produto?');
+
+    if (!confirmed) {
+        return;
+    }
+
     try {
         await axios.delete(`/orders/${props.order.id}/products/${product.id}`);
 
+        router.reload();
         toast.success("Produto removido com sucesso");
 
         props.order.products = props.order.products.filter(p => p.id !== product.id);
-    } catch {
+    } catch (error) {
         toast.error('Erro ao remover produto');
     }
 };

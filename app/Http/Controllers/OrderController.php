@@ -105,6 +105,7 @@ class OrderController extends Controller
             'order' => $order,
             'orderHistories' => $order->histories,
             'products' => Product::all()->map->only(['id', 'name', 'price'])->values(),
+            'clients' => ClientResource::collection(Client::all()),
         ]);
     }
 
@@ -113,10 +114,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        return Inertia::render('Orders/Edit', [
-            'order' => $order,
-            'products' => Product::all()->map->only(['id', 'name', 'price'])->values(),
-        ]);
+        //
     }
 
     /**
@@ -130,9 +128,11 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Order $order)
     {
-        //
+        $order->delete();
+
+        return redirect('/orders');
     }
 
     public function updateDates(Request $request)
@@ -301,5 +301,26 @@ class OrderController extends Controller
 
         $total = $order->calculateTotal();
         $order->update(['total_amount' => $total]);
+    }
+
+    public function updateOrderClient(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'client_id' => 'required|exists:clients,id',
+        ]);
+
+        $order = Order::findOrFail($request->order_id);
+        $newClient = Client::findOrFail($request->client_id);
+
+        $currentClient = $order->client;
+        $currentClientId = $order->client->id;
+
+        if ($currentClientId !== $newClient->id) {
+            $order->client_id = $newClient->id;
+            $order->save();
+
+            $order->addHistory("Cliente atualizado de {$currentClient->name} para {$newClient->name}.", 'atualização');
+        }
     }
 }

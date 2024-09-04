@@ -6,7 +6,7 @@
             <div class="fixed inset-0 flex items-center justify-center">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
                     <h2 class="text-lg font-semibold dark:text-white">Atualizar Datas</h2>
-                    <form @submit.prevent="submitForm">
+                    <form @submit.prevent="saveOrderDates">
                         <div class="mt-4">
                             <label for="scheduled_delivery_date" class="block text-sm font-medium dark:text-white">Data
                                 de
@@ -34,7 +34,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { router } from '@inertiajs/vue3';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
     initialScheduledDate: String,
@@ -52,25 +53,33 @@ const closeModal = () => {
     emit('update:isVisible', false);
 };
 
-const submitForm = async () => {
+const toast = useToast();
+
+const saveOrderDates = async () => {
     try {
-        const response = await axios.post('/orders/update-dates', {
+        router.post('/orders/update-dates', {
             order_id: props.orderId,
             scheduledDeliveryDate: scheduledDeliveryDate.value,
             actualDeliveryDate: actualDeliveryDate.value,
-        });
-
-        if (response.status === 200) {
-            emit('update:dates', {
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                emit('update:dates', {
                 scheduledDeliveryDate: scheduledDeliveryDate.value,
                 actualDeliveryDate: actualDeliveryDate.value,
             });
-            closeModal();
-            window.location.reload();
-        }
+
+                closeModal();
+
+                toast.success("Datas atualizadas com sucesso!");
+            },
+            onError: (errors) => {
+                toast.error('Erro ao salvar datas');
+            }
+        });
     } catch (error) {
         console.error('Erro ao salvar:', error);
-        alert('Erro ao salvar datas');
     }
 };
 </script>
