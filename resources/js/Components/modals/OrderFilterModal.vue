@@ -3,53 +3,39 @@
         <div v-if="isVisible" class="fixed inset-0 z-50">
             <div class="fixed inset-0 bg-black opacity-50" @click="closeModal"></div>
             <div class="fixed inset-0 flex items-center justify-center">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
-                    <h2 class="text-lg font-semibold dark:text-white">Filtros</h2>
+                <div class="modal-content bg-white p-6 rounded shadow-lg w-11/12 md:w-1/3">
+                    <h2 class="text-lg font-semibold">Filtros</h2>
                     <form @submit.prevent="saveFilters()">
                         <ClientSelect v-model="selectedClient" :clients="clients" />
-                        <div class="mt-4">
-                            <label for="created_at" class="block text-sm font-medium dark:text-white">Data do Pedido</label>
-                            <input type="date" id="created_at" v-model="formFilters.created_at"
-                                class="mt-1 block w-full border-gray-300 rounded shadow-sm focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
-                        </div>
-                        <div class="mt-4">
-                            <label for="scheduled_delivery_date"
-                                class="block text-sm font-medium dark:text-white">Data de Agendamento</label>
-                            <input type="date" id="scheduled_deliveivery_dry_date"
-                                v-model="formFilters.scheduled_delate"
-                                class="mt-1 block w-full border-gray-300 rounded shadow-sm focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
-                        </div>
-                        <div class="mt-4">
-                            <label for="actual_delivery_date" class="block text-sm font-medium dark:text-white">Data de Entrega</label>
-                            <input type="date" id="actual_delivery_date" v-model="formFilters.actual_delivery_date"
-                                class="mt-1 block w-full border-gray-300 rounded shadow-sm focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
-                        </div>
+
+                        <ModalItem label="Data do Pedido" id="created_at" type="date"
+                            v-model="formFilters.created_at" />
+
+                        <ModalItem label="Data de Agendamento" id="scheduled_delivery_date" type="date"
+                            v-model="formFilters.scheduled_delivery_date" />
+
+                        <ModalItem label="Data de Entrega" id="actual_delivery_date" type="date"
+                            v-model="formFilters.actual_delivery_date" />
+
                         <div class="mt-5">
-                            <p class="block text-sm font-medium dark:text-white mb-2 ml-2"
-                                v-if="Object.keys(filters).length">Filtros aplicados:</p>
-                            <button v-if="filters.client" @click.prevent="clearFilter('client')"
-                                class="bg-gray-100 px-3 py-2 rounded ml-2 flex items-center hover:bg-gray-200 transition-all">
-                                <i class="fa-solid fa-xmark mr-2"></i>
-                                Cliente: {{ getClientName(filters.client) }}
-                            </button>
-                            <button v-if="filters.created_at" @click.prevent="clearFilter('created_at')"
-                                class="bg-gray-100 px-3 py-2 rounded ml-2 flex items-center hover:bg-gray-200 transition-all mt-2">
-                                <i class="fa-solid fa-xmark mr-2"></i>
-                                Data do Pedido: {{ formatDate(filters.created_at) }}
-                            </button>
-                            <button v-if="filters.scheduled_delivery_date"
-                                @click.prevent="clearFilter('scheduled_delivery_date')"
-                                class="bg-gray-100 px-3 py-2 rounded ml-2 flex items-center hover:bg-gray-200 transition-all mt-2">
-                                <i class="fa-solid fa-xmark mr-2"></i>
-                                Data de Agendamento: {{ formatDate(filters.scheduled_delivery_date) }}
-                            </button>
-                            <button v-if="filters.actual_delivery_date"
-                                @click.prevent="clearFilter('actual_delivery_date')"
-                                class="bg-gray-100 px-3 py-2 rounded ml-2 flex items-center hover:bg-gray-200 transition-all mt-2">
-                                <i class="fa-solid fa-xmark mr-2"></i>
-                                Data de Entrega: {{ formatDate(filters.actual_delivery_date) }}
-                            </button>
-                            <p @click="clearFilters" class="cursor-pointer block text-sm font-medium mt-2 ml-2" v-if="Object.keys(filters).length">Limpar todos os filtros</p>
+                            <p class="block text-sm font-medium mb-2 ml-2" v-if="Object.keys(filters).length">Filtros
+                                aplicados:</p>
+
+                            <RemoveFilterButton label="Cliente" :filterValue="filters.client"
+                                :getDisplayValue="getClientName" @remove-filter="clearFilter('client')" />
+
+                            <RemoveFilterButton label="Data do Pedido" :filterValue="filters.created_at"
+                                :getDisplayValue="formatDate" @remove-filter="clearFilter('created_at')" />
+
+                            <RemoveFilterButton label="Data de Agendamento"
+                                :filterValue="filters.scheduled_delivery_date" :getDisplayValue="formatDate"
+                                @remove-filter="clearFilter('scheduled_delivery_date')" />
+
+                            <RemoveFilterButton label="Data de Entrega" :filterValue="filters.actual_delivery_date"
+                                :getDisplayValue="formatDate" @remove-filter="clearFilter('actual_delivery_date')" />
+
+                            <p @click="clearFilters" class="cursor-pointer block text-sm font-medium mt-2 ml-2"
+                                v-if="Object.keys(filters).length">Limpar todos os filtros</p>
                         </div>
                         <div class="mt-6 flex justify-end space-x-4">
                             <button type="button" @click="closeModal"
@@ -67,8 +53,9 @@
 import { ref } from 'vue';
 import { formatDate } from '@/Composables/useUtils';
 import { useToast } from 'vue-toastification';
-import { router } from '@inertiajs/vue3';
 import ClientSelect from '../inputs/ClientSelect.vue';
+import ModalItem from '../utils/ModalItem.vue';
+import RemoveFilterButton from '../utils/RemoveFilterButton.vue';
 
 const props = defineProps({
     isVisible: Boolean,
@@ -97,7 +84,7 @@ const closeModal = () => {
 
 const toast = useToast();
 
-const saveFilters = (toastRemove) => {
+const saveFilters = (toastRemove, noClose) => {
     const combinedFilters = {
         ...formFilters.value,
         client: selectedClient.value
@@ -107,7 +94,11 @@ const saveFilters = (toastRemove) => {
     if (toastRemove) {
         toast.success("Filtro(s) removido(s) com sucesso");
     }
-};
+
+    if (!noClose) {
+        closeModal()
+    }
+}
 
 const clearFilter = (filter) => {
     if (filter === 'client') {
@@ -116,7 +107,7 @@ const clearFilter = (filter) => {
         formFilters.value[filter] = '';
     }
 
-    saveFilters(true);
+    saveFilters(true, true);
 };
 
 const clearFilters = () => {
@@ -137,10 +128,12 @@ const clearFilters = () => {
 }
 
 .fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active in <2.1.8 */
-    {
+.fade-leave-to {
     opacity: 0;
+}
+
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
 }
 </style>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ClientResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Client;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
@@ -21,8 +22,25 @@ class ClientController extends Controller
                 ->when(FacadesRequest::input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%{$search}%");
                 })
+                ->when(FacadesRequest::input('postal_code'), function ($query, $postal_code) {
+                    $query->where('postal_code', $postal_code);
+                })
+                ->when(FacadesRequest::input('street_address'), function ($query, $street_address) {
+                    $query->where('street_address', $street_address);
+                })
+                ->when(FacadesRequest::input('neighborhood'), function ($query, $neighborhood) {
+                    $query->where('neighborhood', $neighborhood);
+                })
+                ->when(FacadesRequest::input('city'), function ($query, $city) {
+                    $query->where('city', $city);
+                })
+                ->when(FacadesRequest::input('start_date') && FacadesRequest::input('end_date'), function ($query) {
+                    $startDate = Carbon::parse(FacadesRequest::input('start_date'))->startOfDay();
+                    $endDate = Carbon::parse(FacadesRequest::input('end_date'))->endOfDay();
+                    $query->whereBetween('created_at', [$startDate, $endDate]);
+                })
                 ->paginate(10)->withQueryString()),
-            'filters' => FacadesRequest::only(['search']),
+            'filters' => FacadesRequest::only(['search', 'postal_code', 'street_address', 'neighborhood', 'city', 'start_date', 'end_date']),
         ]);
     }
 

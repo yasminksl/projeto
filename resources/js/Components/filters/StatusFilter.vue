@@ -18,11 +18,13 @@ const props = defineProps({
 const emit = defineEmits(['status-change']);
 
 const buttonClasses = (status) => ({
-    'bg-gray-300': props.selectedStatus === status
+    'bg-gray-300': props.selectedStatus === status && status === '',
+    'text-red-900 bg-red-500/20 hover:bg-red-400/20': props.selectedStatus === status && status === 'Entrega Não Agendada',
+    'text-yellow-900 bg-yellow-500/20 hover:bg-yellow-400/20': props.selectedStatus === status && (status === 'Entrega Agendada' || status === 'Em andamento'),
+    'text-green-900 bg-green-500/20 hover:bg-green-400/20': props.selectedStatus === status && status === 'Concluído',
 });
 
 const setStatusFilter = (status) => {
     emit('status-change', status);
 };
-
 </script>

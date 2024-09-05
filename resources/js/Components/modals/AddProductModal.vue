@@ -1,11 +1,9 @@
 <template>
-    <transition enter-active-class="transition-opacity duration-500 ease-in-out"
-        leave-active-class="transition-opacity duration-500 ease-in-out" enter-from-class="opacity-0"
-        enter-to-class="opacity-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+    <transition name="fade">
         <div v-if="isVisible" class="fixed inset-0 z-50">
             <div class="fixed inset-0 bg-black opacity-50" @click="closeModal" />
             <div class="fixed inset-0 flex items-center justify-center">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
+                <div class="modal-content bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
                     <h2 class="text-lg font-semibold dark:text-white">Adicionar produtos</h2>
                     <form @submit.prevent="saveOrderProducts">
                         <div class="mb-4 mt-4">
@@ -100,3 +98,20 @@ const saveOrderProducts = async () => {
 };
 
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+</style>

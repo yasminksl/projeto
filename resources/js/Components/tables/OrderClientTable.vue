@@ -148,7 +148,7 @@ const paymentStatus = (order) => {
 
 const statuses = [
     { value: '', label: 'Todos' },
-    { value: 'em-andamento', label: 'Em andamento' },
+    { value: 'Em andamento', label: 'Em andamento' },
     { value: 'Concluído', label: 'Concluído' },
 ];
 

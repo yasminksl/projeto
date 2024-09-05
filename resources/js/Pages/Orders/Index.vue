@@ -4,16 +4,7 @@
     <Layout title="Pedidos">
         <template #headerContent>
             <div class="flex items-center ml-3">
-                <Link href="/orders/create"
-                    class="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center space-x-1">
-                <div>
-                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path
-                            d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-                    </svg>
-                </div>
-                <div>Adicionar Pedido</div>
-                </Link>
+                <AddButton @click="goToNewOrder" value="Novo Pedido" />
             </div>
         </template>
 
@@ -24,7 +15,10 @@
                         @status-change="setStatusFilter" />
                     <OrderFilter @click="openOrderFilterModal" />
                 </div>
-                <OrderTable :orders="orders" @order-click="goToOrder" />
+                <div v-if="orders.data.length === 0" class="text-center py-6">
+                    <p class="text-gray-500">Nenhum pedido encontrado</p>
+                </div>
+                <OrderTable v-else :orders="orders" @order-click="goToOrder" />
             </div>
         </div>
 
@@ -36,12 +30,13 @@
 <script setup>
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { useFilters } from '@/Composables/useFilters';
 import Layout from '@/Shared/Layout.vue';
 import StatusFilter from '@/Components/filters/StatusFilter.vue';
 import OrderTable from '@/Components/tables/OrderTable.vue';
-import OrderFilter from '@/Components/filters/OrderFilter.vue';
+import OrderFilter from '@/Components/actions/FilterButton.vue';
 import OrderFilterModal from '@/Components/modals/OrderFilterModal.vue';
-import { useFilters } from '@/Composables/useFilters';
+import AddButton from '@/Components/actions/AddButton.vue';
 
 const props = defineProps({
     orders: Object,
@@ -65,6 +60,10 @@ const setStatusFilter = (status) => {
 
 const goToOrder = (id) => {
     router.get(`/orders/${id}`);
+};
+
+const goToNewOrder = (id) => {
+    router.get('/orders/create');
 };
 
 const isModalOrderFilterVisible = ref(false);

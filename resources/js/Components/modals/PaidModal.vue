@@ -3,18 +3,15 @@
         <div v-if="isVisible" class="fixed inset-0 z-50">
             <div class="fixed inset-0 bg-black opacity-50" @click="closeModal"></div>
             <div class="fixed inset-0 flex items-center justify-center">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
+                <div class="modal-content bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-11/12 md:w-1/3">
                     <h2 class="text-lg font-semibold dark:text-white">Adicionar Pagamento</h2>
                     <form @submit.prevent="saveOrderPayment">
-                        <div class="mt-4">
-                            <label for="amount_paid" class="block text-sm font-medium dark:text-white">Valor
-                                pago</label>
-                            <input type="number" v-model.number="amountPaid" id="amount_paid"
-                                placeholder="Digite o valor"
-                                class="mt-1 block w-full border-gray-300 rounded shadow-sm focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                step="0.01" />
-                        </div>
-                        <StatusSelect v-model="paymentMethod" :options="statusOptions" />
+
+                        <ModalItem label="Valor pago" id="amount_paid" type="number" v-model.number="amountPaid"
+                            placeholder="Digite o valor" step="0.01" />
+
+                        <StatusSelect v-model="paymentMethod" :options="statusOptions" required />
+
                         <div class="mt-6 flex justify-end space-x-4">
                             <button type="button" @click="closeModal"
                                 class="bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
@@ -32,6 +29,7 @@ import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { useToast } from 'vue-toastification';
 import StatusSelect from '../inputs/StatusSelect.vue';
+import ModalItem from '../utils/ModalItem.vue';
 
 const props = defineProps({
     isVisible: Boolean,
@@ -75,7 +73,11 @@ const saveOrderPayment = async () => {
                 toast.success("Pagamento adicionado com sucesso!");
             },
             onError: (errors) => {
-                toast.error('Erro ao adicionar pagamento');
+                if(!amountPaid.value || !paymentMethod.value){
+                toast.error('Todos os campos são obrigatórios');
+                } else {
+                    toast.error('Erro ao adicionar pagamento');
+                }
             }
         });
     } catch (error) {
@@ -91,10 +93,12 @@ const saveOrderPayment = async () => {
 }
 
 .fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active in <2.1.8 */
-    {
+.fade-leave-to {
     opacity: 0;
+}
+
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
 }
 </style>
