@@ -8,14 +8,35 @@
                     <form @submit.prevent="saveFilters()">
                         <ClientSelect v-model="selectedClient" :clients="clients" />
 
-                        <ModalItem label="Data do Pedido" id="created_at" type="date"
-                            v-model="formFilters.created_at" />
+                        <label for="start_created_at" class="block text-sm font-medium mt-4">Período de Data de
+                            Criação</label>
+                        <div class="flex space-x-2 items-baseline">
+                            <ModalItem id="start_created_at" type="date" v-model="formFilters.start_created_at"
+                                wrapperClass="mt-0" />
+                            <p class="ml-2 mr-2">até</p>
+                            <ModalItem id="end_created_at" type="date" v-model="formFilters.end_created_at"
+                                wrapperClass="mt-0" />
+                        </div>
 
-                        <ModalItem label="Data de Agendamento" id="scheduled_delivery_date" type="date"
-                            v-model="formFilters.scheduled_delivery_date" />
+                        <label for="start_scheduled_date" class="block text-sm font-medium mt-4">Período de Data de
+                            Agendamento</label>
+                        <div class="flex space-x-2 items-baseline">
+                            <ModalItem id="start_scheduled_date" type="date" v-model="formFilters.start_scheduled_date"
+                                wrapperClass="mt-0" />
+                            <p class="ml-2 mr-2">até</p>
+                            <ModalItem id="end_scheduled_date" type="date" v-model="formFilters.end_scheduled_date"
+                                wrapperClass="mt-0" />
+                        </div>
 
-                        <ModalItem label="Data de Entrega" id="actual_delivery_date" type="date"
-                            v-model="formFilters.actual_delivery_date" />
+                        <label for="start_actual_date" class="block text-sm font-medium mt-4">Período de Data de
+                            Entrega</label>
+                        <div class="flex space-x-2 items-baseline">
+                            <ModalItem id="start_actual_date" type="date" v-model="formFilters.start_actual_date"
+                                wrapperClass="mt-0" />
+                            <p class="ml-2 mr-2">até</p>
+                            <ModalItem id="end_atual_date" type="date" v-model="formFilters.end_atual_date"
+                                wrapperClass="mt-0" />
+                        </div>
 
                         <div class="mt-5">
                             <p class="block text-sm font-medium mb-2 ml-2" v-if="Object.keys(filters).length">Filtros
@@ -24,15 +45,26 @@
                             <RemoveFilterButton label="Cliente" :filterValue="filters.client"
                                 :getDisplayValue="getClientName" @remove-filter="clearFilter('client')" />
 
-                            <RemoveFilterButton label="Data do Pedido" :filterValue="filters.created_at"
-                                :getDisplayValue="formatDate" @remove-filter="clearFilter('created_at')" />
+                            <RemoveFilterButton label="Data de Início (Criação)" :filterValue="filters.start_created_at"
+                                :getDisplayValue="formatDate" @remove-filter="clearFilter('start_created_at')" />
 
-                            <RemoveFilterButton label="Data de Agendamento"
-                                :filterValue="filters.scheduled_delivery_date" :getDisplayValue="formatDate"
-                                @remove-filter="clearFilter('scheduled_delivery_date')" />
+                            <RemoveFilterButton label="Data de Fim (Criação)" :filterValue="filters.end_created_at"
+                                :getDisplayValue="formatDate" @remove-filter="clearFilter('end_created_at')" />
 
-                            <RemoveFilterButton label="Data de Entrega" :filterValue="filters.actual_delivery_date"
-                                :getDisplayValue="formatDate" @remove-filter="clearFilter('actual_delivery_date')" />
+                            <RemoveFilterButton label="Data de Início (Agendamento)"
+                                :filterValue="filters.start_scheduled_date" :getDisplayValue="formatDate"
+                                @remove-filter="clearFilter('start_scheduled_date')" />
+
+                            <RemoveFilterButton label="Data de Fim (Agendamento)"
+                                :filterValue="filters.end_scheduled_date" :getDisplayValue="formatDate"
+                                @remove-filter="clearFilter('end_scheduled_date')" />
+
+                            <RemoveFilterButton label="Data de Início (Entrega)"
+                                :filterValue="filters.start_actual_date" :getDisplayValue="formatDate"
+                                @remove-filter="clearFilter('start_actual_date')" />
+
+                            <RemoveFilterButton label="Data de Início (Entrega)" :filterValue="filters.end_actual_date"
+                                :getDisplayValue="formatDate" @remove-filter="clearFilter('end_actual_date')" />
 
                             <p @click="clearFilters" class="cursor-pointer block text-sm font-medium mt-2 ml-2"
                                 v-if="Object.keys(filters).length">Limpar todos os filtros</p>
@@ -51,7 +83,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { formatDate } from '@/Composables/useUtils';
+import { useDateUtils } from '@/Composables/useUtils';
 import { useToast } from 'vue-toastification';
 import ClientSelect from '../inputs/ClientSelect.vue';
 import ModalItem from '../utils/ModalItem.vue';
@@ -67,10 +99,15 @@ const emit = defineEmits(['update:isVisible', 'apply-filters']);
 
 const selectedClient = ref(props.filters.client || null);
 
+const { formatDate } = useDateUtils();
+
 const formFilters = ref({
-    created_at: props.filters.created_at || '',
-    scheduled_delivery_date: props.filters.scheduled_delivery_date || '',
-    actual_delivery_date: props.filters.actual_delivery_date || ''
+    created_at: props.filters.start_created_at || '',
+    created_at: props.filters.end_created_at || '',
+    start_scheduled_date: props.filters.start_scheduled_date || '',
+    end_scheduled_date: props.filters.end_scheduled_date || '',
+    start_actual_date: props.filters.start_actual_date || '',
+    end_actual_date: props.filters.end_actual_date || '',
 });
 
 const getClientName = (clientId) => {
@@ -84,7 +121,32 @@ const closeModal = () => {
 
 const toast = useToast();
 
-const saveFilters = (toastRemove, noClose) => {
+const validateDates = (start_date, end_date) => {
+    const start = new Date(start_date);
+    const end = new Date(end_date);
+
+    let isValid = true;
+
+    if (start_date && end_date) {
+        if (start > end) {
+            toast.error('A data de fim não pode ser antes da data de início.');
+            isValid = false;
+        }
+    } else if (start_date || end_date) {
+        toast.error('Você deve preencher tanto a data de início quanto a data de fim.');
+        isValid = false;
+    }
+
+    return isValid;
+};
+
+const saveFilters = (toastRemove = false, noClose = false) => {
+    const { start_created_at, end_created_at, start_scheduled_date, end_scheduled_date, start_actual_date, end_actual_date } = formFilters.value;
+
+    if (!validateDates(start_created_at, end_created_at) || !validateDates(start_scheduled_date, end_scheduled_date) || !validateDates(start_actual_date, end_actual_date)) {
+        return;
+    }
+
     const combinedFilters = {
         ...formFilters.value,
         client: selectedClient.value
@@ -96,9 +158,10 @@ const saveFilters = (toastRemove, noClose) => {
     }
 
     if (!noClose) {
-        closeModal()
+        closeModal();
     }
-}
+};
+
 
 const clearFilter = (filter) => {
     if (filter === 'client') {

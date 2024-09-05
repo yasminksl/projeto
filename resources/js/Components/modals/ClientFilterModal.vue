@@ -16,10 +16,13 @@
 
                         <ModalItem label="Cidade" id="city" v-model="formFilters.city" />
 
-                        <ModalItem label="Data de início" id="start_date" type="date"
-                            v-model="formFilters.start_date" />
-
-                        <ModalItem label="Data de fim" id="end_date" type="date" v-model="formFilters.end_date" />
+                        <label for="start_date" class="block text-sm font-medium mt-4">Período de Data de Criação</label>
+                        <div class="flex space-x-2 items-baseline">
+                            <ModalItem id="start_date" type="date"
+                                v-model="formFilters.start_date" wrapperClass="mt-0" />
+                            <p class="ml-2 mr-2">até</p>
+                            <ModalItem id="end_date" type="date" v-model="formFilters.end_date" wrapperClass="mt-0" />
+                        </div>
 
                         <div class="mt-5">
                             <p class="block text-sm font-medium mb-2 ml-2" v-if="Object.keys(filters).length">Filtros

@@ -30,19 +30,25 @@ class OrderController extends Controller
                 ->when(FacadesRequest::input('status'), function ($query, $status) {
                     $query->where('status', $status);
                 })
-                ->when(FacadesRequest::input('scheduled_delivery_date'), function ($query, $date) {
-                    $query->whereDate('scheduled_delivery_date', $date);
+                ->when(FacadesRequest::input('start_scheduled_date') && FacadesRequest::input('end_scheduled_date'), function ($query) {
+                    $startDate = Carbon::parse(FacadesRequest::input('start_scheduled_date'))->startOfDay();
+                    $endDate = Carbon::parse(FacadesRequest::input('end_scheduled_date'))->endOfDay();
+                    $query->whereBetween('scheduled_delivery_date', [$startDate, $endDate]);
                 })
-                ->when(FacadesRequest::input('actual_delivery_date'), function ($query, $date) {
-                    $query->whereDate('actual_delivery_date', $date);
+                ->when(FacadesRequest::input('start_actual_date') && FacadesRequest::input('end_actual_date'), function ($query) {
+                    $startDate = Carbon::parse(FacadesRequest::input('start_actual_date'))->startOfDay();
+                    $endDate = Carbon::parse(FacadesRequest::input('end_actual_date'))->endOfDay();
+                    $query->whereBetween('actual_delivery_date', [$startDate, $endDate]);
                 })
-                ->when(FacadesRequest::input('created_at'), function ($query, $date) {
-                    $query->whereDate('created_at', $date);
+                ->when(FacadesRequest::input('start_created_at') && FacadesRequest::input('end_created_at'), function ($query) {
+                    $startDate = Carbon::parse(FacadesRequest::input('start_created_at'))->startOfDay();
+                    $endDate = Carbon::parse(FacadesRequest::input('end_created_at'))->endOfDay();
+                    $query->whereBetween('created_at', [$startDate, $endDate]);
                 })
                 ->latest()
                 ->paginate(10)
                 ->withQueryString()),
-            'filters' => FacadesRequest::only(['client', 'status', 'scheduled_delivery_date', 'actual_delivery_date', 'created_at']),
+            'filters' => FacadesRequest::only(['client', 'status', 'start_scheduled_date', 'end_scheduled_date', 'start_actual_date', 'end_actual_date', 'start_created_at', 'end_created_at']),
             'clients' => ClientResource::collection(Client::all()),
         ]);
     }

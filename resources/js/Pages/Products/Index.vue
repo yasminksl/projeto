@@ -57,7 +57,7 @@ let props = defineProps({
 let { search } = useSearch(props.filters, '/products');
 
 const goToProduct = (id) => {
-    router.push(`/products/${id}`);
+    router.get(`/products/${id}`);
 };
 
 </script>

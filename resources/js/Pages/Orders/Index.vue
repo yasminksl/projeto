@@ -13,7 +13,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
                     <StatusFilter :statuses="statuses" :selectedStatus="selectedStatus"
                         @status-change="setStatusFilter" />
-                    <OrderFilter @click="openOrderFilterModal" />
+                    <FilterButton @click="openOrderFilterModal" />
                 </div>
                 <div v-if="orders.data.length === 0" class="text-center py-6">
                     <p class="text-gray-500">Nenhum pedido encontrado</p>
@@ -34,7 +34,7 @@ import { useFilters } from '@/Composables/useFilters';
 import Layout from '@/Shared/Layout.vue';
 import StatusFilter from '@/Components/filters/StatusFilter.vue';
 import OrderTable from '@/Components/tables/OrderTable.vue';
-import OrderFilter from '@/Components/actions/FilterButton.vue';
+import FilterButton from '@/Components/actions/FilterButton.vue';
 import OrderFilterModal from '@/Components/modals/OrderFilterModal.vue';
 import AddButton from '@/Components/actions/AddButton.vue';
 
