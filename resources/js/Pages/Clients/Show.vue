@@ -1,9 +1,14 @@
 <template>
 
     <Head :title="client.data.name" />
-    <Layout :title="`Visualizando cliente #${client.data.id}`" class="justify start space-x-5">
+    <Layout :title="`Visualizando cliente #${client.data.id}`">
         <template #headerContent>
-            <EditButton @click="goToEditClient(client.data.id)" />
+            <div class="flex space-x-5">
+                <Link :href="`/clients/${client.data.id}`" @click="deleteClient" form="delete-form"
+                    class="rounded-md bg-red-600 p-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 mr-3">
+                Deletar</Link>
+                <EditButton @click="goToEditClient(client.data.id)" />
+            </div>
         </template>
 
         <div>
@@ -40,6 +45,7 @@ import Layout from '@/Shared/Layout.vue';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { useToast } from 'vue-toastification';
 import OrderClientTable from '@/Components/tables/OrderClientTable.vue';
 import EditButton from '@/Components/actions/EditButton.vue';
 
@@ -57,5 +63,20 @@ const setStatusFilter = (status) => {
 
 const goToEditClient = (id) => {
     router.get(`/clients/${id}/edit`);
+};
+
+const toast = useToast();
+
+let deleteClient = () => {
+    if (confirm('Você tem certeza que deseja deletar este cliente?')) {
+        router.delete(`/clients/${props.client.data.id}`, {
+            onSuccess: () => {
+                toast.success("Cliente deletado com sucesso!");
+            },
+            onError: () => {
+                toast.error("Erro ao deletar o cliente.");
+            }
+        });
+    }
 };
 </script>

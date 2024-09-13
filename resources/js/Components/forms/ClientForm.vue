@@ -49,6 +49,7 @@
 import { useCep } from '@/Composables/useCep';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { useToast } from 'vue-toastification';
+import { router } from '@inertiajs/vue3';
 import InputField from '@/Components/inputs/InputField.vue';
 import FormSection from './FormSection.vue';
 
@@ -109,13 +110,26 @@ const submit = () => {
     }
 
     if (props.initialValues.id) {
-        form.patch(`/clients/${props.initialValues.id}`);
-        toast.success("Cliente atualizado com sucesso!");
+        router.patch(`/clients/${props.initialValues.id}`, form.data(), {
+            onSuccess: () => {
+                emit('submit');
+                toast.success('Cliente atualizado com sucesso!');
+            },
+            onError: () => {
+                toast.error("Erro ao atualizar o cliente.");
+            }
+        });
     } else {
-        form.post('/clients');
-        toast.success("Cliente cadastrado com sucesso!");
+        router.post('/clients', form.data(), {
+            onSuccess: () => {
+                emit('submit');
+                toast.success('Cliente cadastrado com sucesso!');
+            },
+            onError: () => {
+                toast.error("Erro ao cadastrar o cliente.");
+            }
+        });
     }
-    emit('submit');
 };
 
 </script>

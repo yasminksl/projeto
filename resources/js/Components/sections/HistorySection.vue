@@ -20,11 +20,13 @@
 
 <script setup>
 import { computed } from 'vue';
-import { formatDate } from '@/Composables/useUtils';
+import { useDateUtils } from '@/Composables/useUtils';
 
 let props = defineProps({
     orderHistories: Array
 });
+
+const { formatDate } = useDateUtils();
 
 const sortedHistories = computed(() => {
     return [...props.orderHistories].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));

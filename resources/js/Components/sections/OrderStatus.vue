@@ -15,7 +15,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { formatDate } from '@/Composables/useUtils';
+import { useDateUtils } from '@/Composables/useUtils';
 import DateModal from '../modals/DateModal.vue';
 import StatusItem from '../utils/StatusItem.vue';
 import ActionButton from '../actions/ActionButton.vue';
@@ -23,6 +23,8 @@ import ActionButton from '../actions/ActionButton.vue';
 let props = defineProps({
     order: Object
 });
+
+const { formatDate } = useDateUtils();
 
 const isModalDateVisible = ref(false);
 

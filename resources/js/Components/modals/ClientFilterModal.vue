@@ -58,7 +58,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { formatDate } from '@/Composables/useUtils';
+import { useDateUtils } from '@/Composables/useUtils';
 import { useToast } from 'vue-toastification';
 import ModalItem from '../utils/ModalItem.vue';
 import RemoveFilterButton from '../utils/RemoveFilterButton.vue';
@@ -67,6 +67,8 @@ const props = defineProps({
     isVisible: Boolean,
     filters: Object
 });
+
+const { formatDate } = useDateUtils();
 
 const emit = defineEmits(['update:isVisible', 'apply-filters']);
 

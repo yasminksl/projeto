@@ -5,7 +5,7 @@
 
         <div class="flex justify-between items-center">
             <div>
-                <p class="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">
+                <p class="text-base font-medium leading-6 text-gray-600">
                     Criado em: {{ formattedCreationDate }}
                 </p>
             </div>

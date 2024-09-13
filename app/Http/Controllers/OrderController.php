@@ -103,8 +103,6 @@ class OrderController extends Controller
         $total = $order->calculateTotal();
         $order->update(['total_amount' => $total]);
 
-        sleep(2);
-
         return redirect('/orders/' . $order->id);
     }
 

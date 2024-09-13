@@ -17,7 +17,7 @@
 
             </FormSection>
 
-            <FormActions cancelUrl="/products" :isProcessing="form.processing" />
+            <FormActions :cancelUrl="cancelUrl" :isProcessing="form.processing" />
         </div>
     </form>
 </template>
@@ -25,6 +25,7 @@
 <script setup>
 import { useForm } from '@inertiajs/inertia-vue3';
 import { useToast } from 'vue-toastification';
+import { router } from '@inertiajs/vue3';
 import InputField from '@/Components/inputs/InputField.vue';
 import TextAreaField from '../inputs/TextAreaField.vue';
 import FormSection from './FormSection.vue';
@@ -38,7 +39,8 @@ let props = defineProps({
             price: '',
             description: '',
         })
-    }
+    },
+    cancelUrl: String
 });
 
 let emit = defineEmits(['submit']);
@@ -66,13 +68,26 @@ const submit = () => {
     }
 
     if (props.initialValues.id) {
-        form.patch(`/products/${props.initialValues.id}`);
-        toast.success("Produto atualizado com sucesso!");
+        router.patch(`/products/${props.initialValues.id}`, form.data(), {
+            onSuccess: () => {
+                emit('submit');
+                toast.success("Produto atualizado com sucesso!");
+            },
+            onError: () => {
+                toast.error("Erro ao atualizar o produto.");
+            }
+        });
     } else {
-        form.post('/products');
-        toast.success("Produto cadastrado com sucesso!");
+        router.post('/products', form.data(), {
+            onSuccess: () => {
+                emit('submit');
+                toast.success('Produto cadastrado com sucesso!');
+            },
+            onError: () => {
+                toast.error("Erro ao cadastrar o produto.");
+            }
+        });
     }
-    emit('submit');
 };
 
 </script>

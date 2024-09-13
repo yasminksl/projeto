@@ -68,8 +68,6 @@ class ClientController extends Controller
 
         $client = Client::create($attributes);
 
-        sleep(2);
-
         return redirect('/clients/' . $client->id);
     }
 
@@ -122,8 +120,6 @@ class ClientController extends Controller
 
         $client->update($attributes);
 
-        sleep(2);
-
         return redirect('/clients/' . $client->id);
     }
 
@@ -133,8 +129,6 @@ class ClientController extends Controller
     public function destroy(Client $client)
     {
         $client->delete();
-
-        sleep(2);
 
         return redirect('/clients');
     }

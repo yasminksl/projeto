@@ -46,10 +46,9 @@
 <script setup>
 import { useSearch } from '@/Composables/useSearch';
 import { Link } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { useFilters } from '@/Composables/useFilters';
-import { useToast } from 'vue-toastification';
 import Pagination from '@/Shared/Pagination.vue';
 import Layout from '@/Shared/Layout.vue';
 import SearchInput from '@/Components/inputs/SearchInput.vue';

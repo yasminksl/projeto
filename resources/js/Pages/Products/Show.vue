@@ -1,11 +1,13 @@
 <template>
+
     <Head :title="product.name" />
     <Layout title="Detalhes do Produto">
         <template #headerContent>
-            <div>
-                <Link :href="`/products/${product.id}/edit`"
-                    class="rounded-md bg-blue-600 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                Editar</Link>
+            <div class="flex space-x-4">
+                <Link :href="`/products/${product.id}`" @click="deleteProduct" form="delete-form"
+                    class="rounded-md bg-red-600 p-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 mr-3">
+                Deletar</Link>
+                <EditButton @click="goToEditProduct(product.id)" />
             </div>
         </template>
 
@@ -28,7 +30,7 @@
         </div>
         <div class="mt-5 ml-1">
             <Link href="/products" class="text-indigo-600 hover:text-indigo-900">
-                Voltar
+            Voltar
             </Link>
         </div>
     </Layout>
@@ -36,9 +38,31 @@
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
+import { useToast } from 'vue-toastification';
 import Layout from '@/Shared/Layout.vue';
+import EditButton from '@/Components/actions/EditButton.vue';
 
 let props = defineProps({
     product: Object,
 });
+
+const goToEditProduct = (id) => {
+    router.get(`/products/${id}/edit`);
+};
+
+const toast = useToast();
+
+let deleteProduct = () => {
+    if (confirm('Você tem certeza que deseja deletar este produto?')) {
+        router.delete(`/products/${props.product.id}`, {
+            onSuccess: () => {
+                toast.success("Produto deletado com sucesso!");
+            },
+            onError: () => {
+                toast.error("Erro ao deletar o produto.");
+            }
+        });
+    }
+};
 </script>

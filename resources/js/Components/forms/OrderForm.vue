@@ -55,6 +55,7 @@
 import { ref, watch } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { useToast } from 'vue-toastification';
+import { router } from '@inertiajs/vue3';
 import ClientSelect from '../inputs/ClientSelect.vue';
 import ProductSelect from '../inputs/ProductSelect.vue';
 import OrderInputField from '../inputs/OrderInputField.vue';
@@ -146,13 +147,15 @@ const submit = () => {
         return;
     }
 
-    if (props.initialValues.id) {
-        form.patch(`/orders/${props.initialValues.id}`);
-        toast.success("Pedido atualizado com sucesso!");
-    } else {
-        form.post('/orders');
-        toast.success("Pedido cadastrado com sucesso!");
-    }
-    emit('submit');
+    router.post('/orders', form.data(), {
+        onSuccess: () => {
+            emit('submit');
+            toast.success('Pedido cadastrado com sucesso!');
+        },
+        onError: () => {
+            toast.error("Erro ao enviar o formulário.");
+        }
+    });
 };
+
 </script>

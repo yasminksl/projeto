@@ -15,7 +15,7 @@ import { Link } from '@inertiajs/inertia-vue3';
 
 let props = defineProps({
     cancelUrl: {
-        type: String,
+        type: [String, Function],
         required: true,
     },
     cancelLabel: {
