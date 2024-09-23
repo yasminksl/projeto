@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
@@ -178,7 +179,7 @@ class OrderController extends Controller
         $order->save();
 
         foreach ($dateChanges as $change) {
-            $order->addHistory($change, 'teste');
+            $order->addHistory($change, Auth::user()->name);
         }
 
         $order->updateDeliveryStatus();
@@ -206,7 +207,7 @@ class OrderController extends Controller
         $total = $order->calculateTotal();
         $order->update(['total_amount' => $total]);
 
-        $order->addHistory("Pagamento atualizado: {$paymentChange}. {$methodChange}", 'teste');
+        $order->addHistory("Pagamento atualizado: {$paymentChange}. {$methodChange}", Auth::user()->name);
     }
 
     public function updateProducts(Request $request)
@@ -240,7 +241,7 @@ class OrderController extends Controller
         $order->update(['total_amount' => $total]);
 
         $historyText = implode('; ', $historyChanges);
-        $order->addHistory("Produtos adicionados: $historyText", 'teste');
+        $order->addHistory("Produtos adicionados: $historyText", Auth::user()->name);
     }
 
     public function updateOrderValues(Request $request)
@@ -281,7 +282,7 @@ class OrderController extends Controller
         $order->update(['total_amount' => $total]);
 
         if (!empty($changes)) {
-            $order->addHistory("Valores atualizados: " . implode('. ', $changes), 'teste');
+            $order->addHistory("Valores atualizados: " . implode('. ', $changes), Auth::user()->name);
         }
     }
 
@@ -298,7 +299,7 @@ class OrderController extends Controller
         if ($quantity !== $currentQuantity) {
             $order->products()->updateExistingPivot($product->id, ['quantity' => $quantity]);
 
-            $order->addHistory("Quantidade do produto {$product->name} atualizada de {$currentQuantity} para {$quantity}.", 'atualização');
+            $order->addHistory("Quantidade do produto {$product->name} atualizada de {$currentQuantity} para {$quantity}.", Auth::user()->name);
         }
 
         $total = $order->calculateTotal();
@@ -309,7 +310,7 @@ class OrderController extends Controller
     {
         $order->products()->detach($product->id);
 
-        $order->addHistory("Produto {$product->name} removido.", 'remoção');
+        $order->addHistory("Produto {$product->name} removido.", Auth::user()->name);
 
         $total = $order->calculateTotal();
         $order->update(['total_amount' => $total]);
@@ -332,7 +333,7 @@ class OrderController extends Controller
             $order->client_id = $newClient->id;
             $order->save();
 
-            $order->addHistory("Cliente atualizado de {$currentClient->name} para {$newClient->name}.", 'atualização');
+            $order->addHistory("Cliente atualizado de {$currentClient->name} para {$newClient->name}.", Auth::user()->name);
         }
     }
 }

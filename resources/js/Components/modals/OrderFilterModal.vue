@@ -39,8 +39,10 @@
                         </div>
 
                         <div class="mt-5">
-                            <p class="block text-sm font-medium mb-2 ml-2" v-if="Object.keys(filters).length">Filtros
-                                aplicados:</p>
+                            <p class="block text-sm font-medium mb-2 ml-2"
+                                v-if="Object.keys({ ...filters, status: undefined }).filter(key => filters[key] !== undefined && key !== 'status').length">
+                                Filtros aplicados:
+                            </p>
 
                             <RemoveFilterButton label="Cliente" :filterValue="filters.client"
                                 :getDisplayValue="getClientName" @remove-filter="clearFilter('client')" />
