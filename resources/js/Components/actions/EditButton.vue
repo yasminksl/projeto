@@ -1,6 +1,6 @@
 <template>
-    <button class="flex items-center p-1.5 rounded-xl hover:rounded-3xl transition-all duration-300 text-white"
-        :class="background">
+    <button class="flex items-center p-1.5 rounded-xl hover:rounded-3xl transition-all duration-300"
+        :class="color">
         <i class="fa-solid fa-pen-to-square"></i>
         <p v-if="active" class="px-1">Editar</p>
     </button>
@@ -9,14 +9,14 @@
 <script setup>
 
 let props = defineProps({
-    background: {
+    color: {
         type: String,
-        default: 'bg-gray-400 hover:bg-black'
+        default: 'text-gray-800 hover:text-gray-600'
     },
     active: {
         type: Boolean,
         default: false,
-    }
+    },
 });
 
 </script>

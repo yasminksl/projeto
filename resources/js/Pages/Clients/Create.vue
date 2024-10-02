@@ -2,16 +2,14 @@
 
     <Head title="Cadastrar Novo Cliente" />
 
-    <Layout title="Novo Cliente">
-
-        <ClientForm :initialValues="initialValues" @submit="submit" @cancel="cancel" />
+    <Layout title="Novo Cliente" href="/clients" :active="true">
+        <ClientForm :initialValues="initialValues" @submit="submit" />
     </Layout>
 </template>
 
 <script setup>
 import Layout from '@/Shared/Layout.vue';
 import ClientForm from '@/Components/forms/ClientForm.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
 
 let initialValues = {
     'name': '',
@@ -22,12 +20,6 @@ let initialValues = {
     'neighborhood': '',
 };
 
-let form = useForm(initialValues);
-
-let submit = () => {};
-
-let cancel = () => {
-    window.location.href = '/clients';
-};
+let submit = () => { };
 
 </script>

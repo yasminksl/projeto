@@ -1,7 +1,7 @@
 <template>
 
     <Head title="Criar Novo Usuário" />
-    <Layout title="Novo Usuário">
+    <Layout title="Novo Usuário" href="/users" :active="true">
 
         <UserForm @submit="submit" />
     </Layout>
@@ -9,7 +9,7 @@
 
 <script setup>
 import Layout from '@/Shared/Layout.vue';
-import UserForm from '@/Components/forms/UserFormCreate.vue';
+import UserForm from '@/Components/forms/UserForm.vue';
 
 let submit = () => { };
 

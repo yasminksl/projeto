@@ -5,7 +5,8 @@
         <StatusItem label="Entrega agendada para:" :value="`${formatDate(order.scheduled_delivery_date)}`" v-if="order.scheduled_delivery_date"/>
         <StatusItem label="Entrega concluída em:" :value="`${formatDate(order.actual_delivery_date)}`" v-if="order.actual_delivery_date"/>
 
-        <ActionButton @click="openModalDate" value="Atualizar Datas"/>
+        <!-- Atualizar datas -->
+        <ActionButton icon="fa-solid fa-pencil" @click="openModalDate" value="Atualizar Datas"/>
     </div>
 
     <DateModal :initialScheduledDate="order.scheduled_delivery_date" :initialActualDate="order.actual_delivery_date"

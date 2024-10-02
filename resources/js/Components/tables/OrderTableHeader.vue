@@ -1,5 +1,5 @@
 <template>
-    <thead class="bg-gray-200">
+    <thead class="bg-gray-800">
         <tr>
             <th :class="class">ID</th>
             <th :class="class">Nome do
@@ -25,7 +25,7 @@ let props = defineProps({
     showDeliveryDateColumn: Boolean,
     class: {
         type: String,
-        default: 'px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+        default: 'px-4 py-2 text-left text-xs font-medium text-white uppercase tracking-wider'
     }
 });
 

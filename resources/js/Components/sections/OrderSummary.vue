@@ -1,31 +1,41 @@
 <template>
     <div class="flex flex-col px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6">
+
+        <!-- Título e editar sumário -->
         <div class="flex justify-between items-center">
             <h3 class="text-xl font-semibold leading-5 text-gray-800">Sumário</h3>
             <EditButton @click="openModalEditOrderSummary"/>
         </div>
+
+        <!-- Valores -->
         <div class="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
             <SummaryItem label="Subtotal" :value="`R$ ${subtotal.toFixed(2)}`" />
             <SummaryItem label="Desconto" :value="`- R$ ${order.discount}`" />
             <SummaryItem label="Juros" :value="`+ R$ ${order.interest}`" />
         </div>
+
+        <!-- Valores de pagamento -->
         <SummaryItem label="Total" :value="`R$ ${order.total_amount}`" aditionalClass="font-semibold" />
         <SummaryItem v-if="order.amount_paid" label="Valor pago" :value="`- R$ ${order.amount_paid}`"
             aditionalClass="font-semibold" />
         <SummaryItem v-if="order.total_amount != order.amount_paid" label="Total a receber"
             :value="`R$ ${(order.total_amount - order.amount_paid).toFixed(2)}`" aditionalClass="font-semibold" />
 
-        <ActionButton v-if="order.total_amount != order.amount_paid" @click="openModalPayment"
+        <!-- Adicionar pagamento -->
+        <ActionButton icon="fa-solid fa-plus" v-if="order.total_amount != order.amount_paid" @click="openModalPayment"
             value="Adicionar Pagamento" />
 
+        <!-- Pedido Pago -->
         <div class="w-full flex justify-center items-center mt-5" v-if="order.total_amount === order.amount_paid">
             <p class="bg-green-500 p-3 rounded-xl">Pedido pago</p>
         </div>
     </div>
 
+    <!-- Modal Adicionar Pagamento -->
     <PaidModal :isVisible="isModalPaymentVisible" :orderId="order.id" @update:isVisible="isModalPaymentVisible = $event"
         @update:payment="updatePayment" />
 
+    <!-- Modal Editar Valores -->
     <EditOrderSummaryModal :isVisible="isModalEditOrderSummaryVisible" :order="order" @update:isVisible="isModalEditOrderSummaryVisible = $event" @update:order-values="updateOrderValues"/>
 </template>
 

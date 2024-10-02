@@ -1,6 +1,6 @@
 <template>
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-300 rounded-md">
+    <div class="overflow-x-auto rounded-lg">
+        <table class="min-w-full bg-white border border-gray-300 divide-y divide-white">
             <OrderTableHeader :showScheduledDateColumn="showScheduledDateColumn"
                 :showDeliveryDateColumn="showDeliveryDateColumn" />
             <OrderTableRow :showScheduledDateColumn="showScheduledDateColumn"

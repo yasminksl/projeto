@@ -1,40 +1,32 @@
 <template>
-    <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company" />
-            <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your
-                account</h2>
-        </div>
+    <div class="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-200">
+        <div class="bg-white sm:mx-auto sm:w-full sm:max-w-sm p-10 shadow-lg rounded-lg">
 
-        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form @submit.prevent="submit" class="space-y-6">
-                <div>
-                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
-                    <div class="mt-2">
-                        <input v-model="form.email" id="email" name="email" type="email" autocomplete="email" required
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                    </div>
-                </div>
+            <div class="text-3xl text-gray-800 flex flex-col space-y-14 items-center mt-10">
+                <i class="fa-solid fa-chart-pie fa-2xl"></i>
+                <h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-800">Entre na sua
+                    conta
+                </h2>
+            </div>
 
-                <div>
-                    <div class="flex items-center justify-between">
-                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Senha</label>
-                        <!-- <div class="text-sm">
-                            <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
-                        </div> -->
-                    </div>
-                    <div class="mt-2">
-                        <input v-model="form.password" id="password" name="password" type="password" autocomplete="current-password" required
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                    </div>
-                </div>
+            <div class="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+                <form @submit.prevent="submit" class="space-y-6">
+                    <!-- E-mail -->
+                    <InputField name="email" id="email" type="email"
+                        autocomplete="email" placeholder="E-mail" v-model="form.email" required />
 
-                <div>
-                    <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" :disabled="form.processing">Login</button>
-                </div>
-            </form>
+                    <InputField name="password" id="password"
+                        :type="isEyeOpen ? 'text' : 'password'" autocomplete="current-password" placeholder="Senha"
+                        v-model="form.password" required eye @eye-toggled="handleEyeToggle" />
+
+                    <div>
+                        <button type="submit"
+                            class=" mt-10 flex w-full justify-center rounded-md bg-gray-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
+                            :disabled="form.processing">
+                            Entrar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </template>
@@ -42,14 +34,41 @@
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { useToast } from 'vue-toastification';
+import InputField from '@/Components/inputs/InputField.vue';
 
 const form = useForm({
     'email': '',
     'password': '',
 });
 
-let submit = function () {
-    form.post('/login');
+const toast = useToast();
+
+const errorMessages = ref('');
+
+const isEyeOpen = ref(false);
+
+const handleEyeToggle = (isOpen) => {
+    isEyeOpen.value = !isOpen;
+    console.log('O olho está agora:', isOpen ? 'Aberto' : 'Fechado');
+};
+
+const submit = async () => {
+
+    router.post('/login', form.data(), {
+        onSuccess: () => {
+            emit('submit');
+        },
+        onError: (errors) => {
+            if (errors) {
+                errorMessages.value = Object.values(errors).join(' ');
+            }
+
+            toast.error(errorMessages.value);
+        }
+    });
 };
 
 </script>

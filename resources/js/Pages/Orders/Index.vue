@@ -8,9 +8,9 @@
             </div>
         </template>
 
-        <div class="min-h-screen bg-gray-100 p-4 sm:p-6">
+        <div class="min-h-screen bg-gray-100">
             <div class="p-6 bg-white shadow-md rounded-lg mb-6">
-                <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 justify-between items-center mb-4">
                     <StatusFilter :statuses="statuses" :selectedStatus="selectedStatus"
                         @status-change="setStatusFilter" />
                     <FilterButton @click="openOrderFilterModal" />

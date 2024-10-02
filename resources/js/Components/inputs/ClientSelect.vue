@@ -1,34 +1,31 @@
 <template>
     <div class="relative">
         <div>
-            <label for="client_name" class="block text-sm font-medium leading-6 text-gray-900">Nome do Cliente</label>
+            <label for="client_name" class="block text-sm font-medium leading-6 text-gray-900 mb-2">Nome do
+                Cliente</label>
+
             <div @click="toggleDropdown"
-                class="flex justify-between items-center border border-gray-300 rounded-md shadow-sm cursor-pointer p-2 mt-1">
+                class="flex justify-between items-center mt-1 cursor-pointer p-2 border-gray-300  bg-white w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 focus:outline-none focus:ring-black focus:border-black focus:ring-offset-0">
                 <span v-if="selectedClient">{{ selectedClient.name }}</span>
-                <span v-else>Selecionar Cliente</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+                <span v-else class="text-gray-400">Selecionar Cliente</span>
+                <i class="fa-solid fa-chevron-down"></i>
             </div>
         </div>
 
         <div v-if="isDropdownOpen"
             class="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10">
+
             <input type="text" v-model="searchTerm" placeholder="Pesquisar clientes..."
                 class="w-full p-2 border-b border-gray-300 rounded-t-md" />
 
-            <ul class="max-h-60 overflow-y-auto">
+            <ul
+                class="absolute z-10 w-full mt-1 bg-white border-gray-300 max-h-60 overflow-y-auto block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 focus:outline-none focus:ring-black focus:border-black focus:ring-offset-0">
                 <li v-for="client in filteredClients" :key="client.id" @click="selectClient(client)"
-                    class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-gray-100">
+                    class="cursor-pointer select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-gray-200">
                     <span class="ml-3 block truncate">{{ client.name }}</span>
                     <span v-if="client === selectedClient"
-                        class="absolute inset-y-0 right-0 flex items-center pr-4 text-blue-600">
-                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                clip-rule="evenodd" />
-                        </svg>
+                        class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-800">
+                        <i class="fa-solid fa-check"></i>
                     </span>
                 </li>
             </ul>
@@ -37,6 +34,8 @@
                 Nenhum cliente encontrado
             </div>
         </div>
+
+
     </div>
 </template>
 

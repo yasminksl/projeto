@@ -1,45 +1,46 @@
 <template>
-    <div class="mb-4">
-        <label :for="id" class="block text-sm font-medium leading-6 text-gray-900">{{ label }}</label>
-        <select :id="id" v-model="internalValue"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-            :required="required">
-            <option v-for="option in options" :key="option.value" :value="option.value">
+    <div class="mb-4 relative">
+        <label for="id" class="block text-sm font-medium leading-6 text-gray-900 mb-2">{{ label }}</label>
+
+        <div @click="toggleDropdown"
+            class="flex justify-between items-center mt-1 cursor-pointer p-2 border-gray-300  bg-white w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 focus:outline-none focus:ring-black focus:border-black focus:ring-offset-0">
+            <span v-if="selectedOption">{{ selectedOption.text }}</span>
+            <span v-else class="text-gray-400">Selecione uma opção</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+
+        <ul v-if="dropdownOpen"
+            class="absolute z-10 w-full mt-1 bg-white border-gray-300 max-h-52 block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 focus:outline-none focus:ring-black focus:border-black focus:ring-offset-0">
+            <li v-for="option in options" :key="option.value" @click="selectOption(option)"
+                class="cursor-pointer p-2 hover:bg-gray-200" :style="{ backgroundColor: option.color }">
                 {{ option.text }}
-            </option>
-        </select>
+            </li>
+        </ul>
+
     </div>
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps({
-    modelValue: [String, Number],
-    options: {
-        type: Array,
-        default: () => []
-    },
-    id: {
-        type: String,
-        default: 'status'
-    },
-    label: {
-        type: String,
-        default: 'Status'
-    },
-    required: {
-        type: Boolean,
-        default: false
-    }
+    label: { type: String, required: true },
+    options: { type: Array, required: true },
+    required: { type: Boolean, default: false },
+    modelValue: { type: String, default: null },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits();
+const dropdownOpen = ref(false);
+const selectedOption = ref(null);
 
-const internalValue = ref(props.modelValue);
+function toggleDropdown() {
+    dropdownOpen.value = !dropdownOpen.value;
+}
 
-watch(internalValue, (newValue) => {
-    emit('update:modelValue', newValue);
-});
-
+function selectOption(option) {
+    selectedOption.value = option;
+    emit('update:modelValue', option.value); 
+    dropdownOpen.value = false;
+}
 </script>

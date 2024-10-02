@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="submit">
 
-        <div class="space-y-12">
+        <div class="space-y-12 mb-5 mt-3">
             <FormSection title="Dados do Produto">
                 <!-- Campo de Nome do Produto -->
                 <InputField wrapperClass="sm:col-span-4" name="name" id="name" label="Nome" v-model="form.name"
@@ -17,7 +17,9 @@
 
             </FormSection>
 
-            <FormActions :cancelUrl="cancelUrl" :isProcessing="form.processing" />
+            <div class="flex justify-end">
+                <SaveButton type="submit" :disabled="form.processing" />
+            </div>
         </div>
     </form>
 </template>
@@ -29,7 +31,7 @@ import { router } from '@inertiajs/vue3';
 import InputField from '@/Components/inputs/InputField.vue';
 import TextAreaField from '../inputs/TextAreaField.vue';
 import FormSection from './FormSection.vue';
-import FormActions from '../actions/FormActions.vue';
+import SaveButton from '../actions/SaveButton.vue';
 
 let props = defineProps({
     initialValues: {

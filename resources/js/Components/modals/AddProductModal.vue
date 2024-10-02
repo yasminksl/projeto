@@ -3,32 +3,39 @@
         <div v-if="isVisible" class="fixed inset-0 z-50">
             <div class="fixed inset-0 bg-black opacity-50" @click="closeModal" />
             <div class="fixed inset-0 flex items-center justify-center">
-                <div class="modal-content bg-white p-6 rounded shadow-lg w-11/12 md:w-1/3">
-                    <h2 class="text-lg font-semibold">Adicionar produtos</h2>
+                <div class="modal-content bg-white rounded shadow-lg w-11/12 md:w-1/3">
+
+                    <div class="border-b border-gray-200 p-4 flex justify-between">
+                        <div class="flex items-start space-x-3">
+                            <i class="fa-solid fa-bag-shopping border border-gray-200 p-3 shadow-sm rounded-md"></i>
+                            <div>
+                                <h2 class="text-lg font-semibold">Adicionar produtos</h2>
+                                <p class="text-sm text-gray-500">Adicione produtos ao pedido.</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-xmark cursor-pointer" @click="closeModal"></i>
+                    </div>
+
                     <form @submit.prevent="saveOrderProducts">
-                        <div class="mb-4 mt-4">
+                        <div class="p-4">
                             <label for="products"
-                                class="block text-sm font-medium leading-6 text-gray-900">Produtos</label>
+                                class="text-sm font-bold leading-6 text-gray-800 hidden">Produtos</label>
+
                             <div v-for="(product, index) in selectedProducts" :key="index"
-                                class="flex items-center justify-content: flex-start mb-4 mt-1 space-x-2">
+                                class="flex space-x-2 mb-4 items-center">
                                 <ProductSelect :products="availableProducts" :modelValue="product"
-                                    @update:modelValue="updateProduct(index, $event)" class="flex-1 h-12" />
-                                <!-- Definindo a altura fixa para o seletor de produtos e o input -->
+                                    @update:modelValue="updateProduct(index, $event)" class="flex-1" />
                                 <input type="number" v-model.number="product.quantity" placeholder="Quantidade"
-                                    class="w-24 h-12 p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                                <button type="button" @click="removeProduct(index)" class="ml-2 text-red-500">
+                                    class="w-16 h-12 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black focus:ring-offset-0" />
+                                <button type="button" @click="removeProduct(index)" class="ml-2 text-red-500 text-sm">
                                     Remover
                                 </button>
                             </div>
-                            <button type="button" @click="addProduct"
-                                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                Adicionar Produto
-                            </button>
+
+                            <AddButton value="Adicionar" @click="addProduct" />
                         </div>
-                        <div class="mt-6 flex justify-end space-x-4">
-                            <button type="button" @click="closeModal"
-                                class="bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Salvar</button>
+                        <div class="flex justify-end p-4">
+                            <SaveButton type="submit">Salvar</SaveButton>
                         </div>
                     </form>
                 </div>
@@ -41,6 +48,8 @@
 import { ref, computed } from 'vue';
 import axios from 'axios';
 import ProductSelect from '../inputs/ProductSelect.vue';
+import AddButton from '../actions/AddButton.vue';
+import SaveButton from '../actions/SaveButton.vue';
 
 const props = defineProps({
     isVisible: Boolean,
@@ -102,16 +111,15 @@ const saveOrderProducts = async () => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.5s;
+  transition: opacity 0.5s ease;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 
 .modal-content {
     max-height: 80vh;
-    overflow-y: auto;
 }
 </style>

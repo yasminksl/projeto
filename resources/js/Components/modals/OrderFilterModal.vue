@@ -3,78 +3,102 @@
         <div v-if="isVisible" class="fixed inset-0 z-50">
             <div class="fixed inset-0 bg-black opacity-50" @click="closeModal"></div>
             <div class="fixed inset-0 flex items-center justify-center">
-                <div class="modal-content bg-white p-6 rounded shadow-lg w-11/12 md:w-1/3">
-                    <h2 class="text-lg font-semibold">Filtros</h2>
+                <div class="modal-content bg-white rounded shadow-lg w-11/12 md:w-1/3">
+
+                    <!-- Título e Limpar todos os filtros -->
+                    <div class="border-b border-gray-200 p-4 flex justify-between">
+                        <div class="flex items-start space-x-3">
+                            <div class="flex items-center space-x-2">
+                                <h2 class="text-lg font-semibold">Filtros</h2>
+                                <div class="bg-gray-100 p-2 rounded-full shadow-sm flex items-center hover:bg-gray-200 transition-all"
+                                    v-if="Object.keys({ ...filters, status: undefined }).filter(key => filters[key] !== undefined && key !== 'status').length">
+                                    <p @click="clearFilters" class="cursor-pointer text-sm">
+                                        Limpar todos os filtros</p>
+                                    <i class="fa-regular fa-circle-xmark text-gray-400 ml-2"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-xmark cursor-pointer" @click="closeModal"></i>
+                    </div>
+
                     <form @submit.prevent="saveFilters()">
-                        <ClientSelect v-model="selectedClient" :clients="clients" />
+                        <div class="p-4">
+                            <!-- Nome do cliente -->
+                            <ClientSelect v-model="selectedClient" :clients="clients" />
 
-                        <label for="start_created_at" class="block text-sm font-medium mt-4">Período de Data de
-                            Criação</label>
-                        <div class="flex space-x-2 items-baseline">
-                            <ModalItem id="start_created_at" type="date" v-model="formFilters.start_created_at"
-                                wrapperClass="mt-0" />
-                            <p class="ml-2 mr-2">até</p>
-                            <ModalItem id="end_created_at" type="date" v-model="formFilters.end_created_at"
-                                wrapperClass="mt-0" />
-                        </div>
+                            <!-- Data de Criação -->
+                            <label for="start_created_at"
+                                class="block text-sm font-medium leading-6 text-gray-900 mt-4">Período de Data de
+                                Criação</label>
+                            <div class="flex space-x-2 items-baseline">
+                                <InputField id="start_created_at" type="date" v-model="formFilters.start_created_at"
+                                    wrapperClass="mt-0" class="mt-2" />
+                                <p class="ml-2 mr-2 text-sm">até</p>
+                                <InputField id="end_created_at" type="date" v-model="formFilters.end_created_at"
+                                    wrapperClass="mt-0" />
+                            </div>
 
-                        <label for="start_scheduled_date" class="block text-sm font-medium mt-4">Período de Data de
-                            Agendamento</label>
-                        <div class="flex space-x-2 items-baseline">
-                            <ModalItem id="start_scheduled_date" type="date" v-model="formFilters.start_scheduled_date"
-                                wrapperClass="mt-0" />
-                            <p class="ml-2 mr-2">até</p>
-                            <ModalItem id="end_scheduled_date" type="date" v-model="formFilters.end_scheduled_date"
-                                wrapperClass="mt-0" />
-                        </div>
+                            <!-- Data de Agendamento -->
+                            <label for="start_scheduled_date"
+                                class="block text-sm font-medium leading-6 text-gray-900 mt-4">Período de Data de
+                                Agendamento</label>
+                            <div class="flex space-x-2 items-baseline">
+                                <InputField id="start_scheduled_date" type="date"
+                                    v-model="formFilters.start_scheduled_date" wrapperClass="mt-0" class="mt-2" />
+                                <p class="ml-2 mr-2 text-sm">até</p>
+                                <InputField id="end_scheduled_date" type="date" v-model="formFilters.end_scheduled_date"
+                                    wrapperClass="mt-0" />
+                            </div>
 
-                        <label for="start_actual_date" class="block text-sm font-medium mt-4">Período de Data de
-                            Entrega</label>
-                        <div class="flex space-x-2 items-baseline">
-                            <ModalItem id="start_actual_date" type="date" v-model="formFilters.start_actual_date"
-                                wrapperClass="mt-0" />
-                            <p class="ml-2 mr-2">até</p>
-                            <ModalItem id="end_atual_date" type="date" v-model="formFilters.end_atual_date"
-                                wrapperClass="mt-0" />
-                        </div>
+                            <!-- Data de Entrega -->
+                            <label for="start_actual_date"
+                                class="block text-sm font-medium leading-6 text-gray-900 mt-4">Período de Data de
+                                Entrega</label>
+                            <div class="flex space-x-2 items-baseline">
+                                <InputField id="start_actual_date" type="date" v-model="formFilters.start_actual_date"
+                                    wrapperClass="mt-0" class="mt-2" />
+                                <p class="ml-2 mr-2 text-sm">até</p>
+                                <InputField id="end_atual_date" type="date" v-model="formFilters.end_atual_date"
+                                    wrapperClass="mt-0" />
+                            </div>
 
-                        <div class="mt-5">
-                            <p class="block text-sm font-medium mb-2 ml-2"
-                                v-if="Object.keys({ ...filters, status: undefined }).filter(key => filters[key] !== undefined && key !== 'status').length">
-                                Filtros aplicados:
-                            </p>
+                            <!-- Filtros aplicados -->
+                            <div class="mt-5">
+                                <p class="block text-sm font-medium mb-2"
+                                    v-if="Object.keys({ ...filters, status: undefined }).filter(key => filters[key] !== undefined && key !== 'status').length">
+                                    Filtros aplicados:
+                                </p>
 
-                            <RemoveFilterButton label="Cliente" :filterValue="filters.client"
-                                :getDisplayValue="getClientName" @remove-filter="clearFilter('client')" />
+                                <RemoveFilterButton label="Cliente" :filterValue="filters.client"
+                                    :getDisplayValue="getClientName" @remove-filter="clearFilter('client')" />
 
-                            <RemoveFilterButton label="Data de Início (Criação)" :filterValue="filters.start_created_at"
-                                :getDisplayValue="formatDate" @remove-filter="clearFilter('start_created_at')" />
+                                <RemoveFilterButton label="Data de Início (Criação)"
+                                    :filterValue="filters.start_created_at" :getDisplayValue="formatDate"
+                                    @remove-filter="clearFilter('start_created_at')" />
 
-                            <RemoveFilterButton label="Data de Fim (Criação)" :filterValue="filters.end_created_at"
-                                :getDisplayValue="formatDate" @remove-filter="clearFilter('end_created_at')" />
+                                <RemoveFilterButton label="Data de Fim (Criação)" :filterValue="filters.end_created_at"
+                                    :getDisplayValue="formatDate" @remove-filter="clearFilter('end_created_at')" />
 
-                            <RemoveFilterButton label="Data de Início (Agendamento)"
-                                :filterValue="filters.start_scheduled_date" :getDisplayValue="formatDate"
-                                @remove-filter="clearFilter('start_scheduled_date')" />
+                                <RemoveFilterButton label="Data de Início (Agendamento)"
+                                    :filterValue="filters.start_scheduled_date" :getDisplayValue="formatDate"
+                                    @remove-filter="clearFilter('start_scheduled_date')" />
 
-                            <RemoveFilterButton label="Data de Fim (Agendamento)"
-                                :filterValue="filters.end_scheduled_date" :getDisplayValue="formatDate"
-                                @remove-filter="clearFilter('end_scheduled_date')" />
+                                <RemoveFilterButton label="Data de Fim (Agendamento)"
+                                    :filterValue="filters.end_scheduled_date" :getDisplayValue="formatDate"
+                                    @remove-filter="clearFilter('end_scheduled_date')" />
 
-                            <RemoveFilterButton label="Data de Início (Entrega)"
-                                :filterValue="filters.start_actual_date" :getDisplayValue="formatDate"
-                                @remove-filter="clearFilter('start_actual_date')" />
+                                <RemoveFilterButton label="Data de Início (Entrega)"
+                                    :filterValue="filters.start_actual_date" :getDisplayValue="formatDate"
+                                    @remove-filter="clearFilter('start_actual_date')" />
 
-                            <RemoveFilterButton label="Data de Início (Entrega)" :filterValue="filters.end_actual_date"
-                                :getDisplayValue="formatDate" @remove-filter="clearFilter('end_actual_date')" />
+                                <RemoveFilterButton label="Data de Início (Entrega)"
+                                    :filterValue="filters.end_actual_date" :getDisplayValue="formatDate"
+                                    @remove-filter="clearFilter('end_actual_date')" />
+                            </div>
 
-                            <p @click="clearFilters" class="cursor-pointer block text-sm font-medium mt-2 ml-2"
-                                v-if="Object.keys(filters).length">Limpar todos os filtros</p>
-                        </div>
-                        <div class="mt-6 flex justify-end space-x-4">
-                            <button type="button" @click="closeModal"
-                                class="bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Salvar</button>
+                            <div class="flex justify-end mt-4">
+                                <SaveButton @click="saveClient" type="submit">Salvar</SaveButton>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -88,8 +112,9 @@ import { ref } from 'vue';
 import { useDateUtils } from '@/Composables/useUtils';
 import { useToast } from 'vue-toastification';
 import ClientSelect from '../inputs/ClientSelect.vue';
-import ModalItem from '../utils/ModalItem.vue';
 import RemoveFilterButton from '../utils/RemoveFilterButton.vue';
+import InputField from '../inputs/InputField.vue';
+import SaveButton from '../actions/SaveButton.vue';
 
 const props = defineProps({
     isVisible: Boolean,
@@ -189,12 +214,12 @@ const clearFilters = () => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.5s;
+  transition: opacity 0.5s ease;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 
 .modal-content {

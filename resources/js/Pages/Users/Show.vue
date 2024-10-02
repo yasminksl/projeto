@@ -1,31 +1,31 @@
 <template>
 
     <Head :title="user.data.name" />
-    <Layout :title="`Visualizando usuário #${user.data.id}`">
+    <Layout :title="`Visualizando usuário #${user.data.id}`" href="/users" :active="true">
+
         <template #headerContent>
-            <Link :href="`/users/${user.data.id}`" @click="deleteUser" form="delete-form"
-                class="rounded-md bg-red-600 p-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 mr-3">
-            Deletar</Link>
+            <DeleteButton :href="`/users/${user.data.id}`" @click="deleteUser" form="delete-form" </DeleteButton>
         </template>
 
-        <div class="px-4 py-5 sm:p-6 bg-gray-100 shadow sm:rounded-lg">
-            <div class="px-4 sm:px-0 flex justify-between space-x-1">
-                <div>
-                    <h4 class="text-base font-semibold leading-7 text-gray-900">Dados</h4>
-                    <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Criado em {{ formattedCreationDate }}</p>
-                </div>
-                <div>
-                    <EditButton :active="true" @click="openEditUserModal" />
-                </div>
+        <div class="px-4 py-5 sm:p-6 bg-white shadow sm:rounded-lg">
+
+            <!-- Título -->
+            <div class="flex mb-4 items-center space-x-1">
+                <h4 class="text-lg font-semibold leading-5 text-gray-800">Dados</h4>
+                <EditButton @click="openEditUserModal" />
             </div>
-            <div class="mt-6 border-t border-white">
-                <dl class="divide-y divide-white">
+
+            <div class="border-t border-gray-100">
+                <dl class="divide-y divide-gray-100">
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 space-x-1">
+
+                        <!-- Foto -->
                         <div class="flex flex-col">
                             <dt class="block text-sm font-medium text-gray-900 sm:mt-px">Foto</dt>
                             <p class="max-w-2xl text-sm leading-6 text-gray-500">Clique na imagem para editá-la</p>
                         </div>
 
+                        <!-- Editar Foto -->
                         <div class="relative group mt-1">
                             <img :src="`/${user.data.profile_photo_path}`" alt=""
                                 class="h-48 w-48 flex-none rounded-full bg-gray-50">
@@ -41,24 +41,29 @@
                         </div>
 
                     </div>
+
+                    <!-- Nome -->
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="block text-sm font-medium text-gray-900 sm:mt-px">Nome</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.data.name }}</dd>
                     </div>
+
+                    <!-- E-mail -->
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="block text-sm font-medium text-gray-900 sm:mt-px">E-mail</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.data.email }}
                         </dd>
                     </div>
+
+                    <!-- Data de Criação -->
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt class="block text-sm font-medium text-gray-900 sm:mt-px">Data de Criação</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ formattedCreationDate
+                            }}
+                        </dd>
+                    </div>
                 </dl>
             </div>
-        </div>
-
-
-        <div class="mt-5 ml-1">
-            <Link href="/users" class="text-indigo-600 hover:text-indigo-900">
-            Voltar
-            </Link>
         </div>
 
         <EditPhotoUserModal :isVisible="isModalEditPhotoUserVisible"
@@ -80,6 +85,7 @@ import { useToast } from 'vue-toastification';
 import EditButton from '@/Components/actions/EditButton.vue';
 import EditPhotoUserModal from '@/Components/modals/EditPhotoUserModal.vue';
 import EditUserModal from '@/Components/modals/EditUserModal.vue';
+import DeleteButton from '@/Components/actions/DeleteButton.vue';
 
 let props = defineProps({
     user: Object,

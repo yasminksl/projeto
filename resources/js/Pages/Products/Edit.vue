@@ -1,7 +1,6 @@
 <template>
-    <Layout :title="`Editando produto: ${originalName}`">
-
-        <ProductForm :product="product" :initialValues="product" @submit="submit" :cancelUrl="`/products/${product.id}`"/>
+    <Layout :title="`Editando produto: ${originalName}`" :href="`/products/${product.id}`" :active="true">
+        <ProductForm :product="product" :initialValues="product" @submit="submit" />
     </Layout>
 </template>
 
@@ -15,6 +14,6 @@ let props = defineProps({
 
 let originalName = props.product.name;
 
-let submit = () => {};
+let submit = () => { };
 
 </script>

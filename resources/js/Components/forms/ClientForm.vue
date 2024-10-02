@@ -1,9 +1,8 @@
 <template>
     <form @submit.prevent="submit">
 
-        <div class="space-y-12">
-
-            <FormSection title="Dados">
+        <div>
+            <FormSection title="Dados do Cliente">
                 <!-- Campo de Nome Completo -->
                 <InputField wrapperClass="sm:col-span-4" name="name" id="name" label="Nome Completo" v-model="form.name"
                     required />
@@ -11,36 +10,29 @@
 
             <FormSection title="Endereço">
                 <!-- Campo de CEP -->
-                <InputField wrapperClass="mt-3 sm:col-span-2" name="postal_code" id="postal_code"
-                    autocomplete="postal-code" label="CEP" v-model="form.postal_code" @blur="handlePostalCodeBlur"
-                    required />
+                <InputField wrapperClass="sm:col-span-2" name="postal_code" id="postal_code" autocomplete="postal-code"
+                    label="CEP" v-model="form.postal_code" @blur="handlePostalCodeBlur" required />
 
                 <!-- Campo de Logradouro -->
-                <InputField wrapperClass="mt-3 sm:col-span-4 sm:col-start-1" name="street_address" id="street_address"
+                <InputField wrapperClass="sm:col-span-4 sm:col-start-1" name="street_address" id="street_address"
                     autocomplete="street-address" label="Logradouro" v-model="form.street_address" required />
 
                 <!-- Campo de Número -->
-                <InputField wrapperClass="mt-3 sm:col-span-1" name="address_number" id="address_number" label="Número"
+                <InputField wrapperClass="sm:col-span-1" name="address_number" id="address_number" label="Número"
                     v-model="form.address_number" required />
 
                 <!-- Campo de Bairro -->
-                <InputField wrapperClass="mt-3 sm:col-span-2 sm:col-start-1" name="neighborhood" id="neighborhood"
+                <InputField wrapperClass="sm:col-span-2 sm:col-start-1" name="neighborhood" id="neighborhood"
                     label="Bairro" v-model="form.neighborhood" required />
 
                 <!-- Campo de Cidade -->
-                <InputField wrapperClass="mt-3 sm:col-span-2" name="city" id="city" label="Cidade" v-model="form.city"
+                <InputField wrapperClass="sm:col-span-2" name="city" id="city" label="Cidade" v-model="form.city"
                     required />
             </FormSection>
         </div>
 
-        <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button type="button" @click="$emit('cancel')" class="text-sm font-semibold leading-6 text-gray-900">
-                Cancelar
-            </button>
-            <button type="submit" :disabled="form.processing"
-                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                Salvar
-            </button>
+        <div class="flex justify-end mb-5">
+            <SaveButton type="submit" :disabled="form.processing" />
         </div>
     </form>
 </template>
@@ -52,6 +44,8 @@ import { useToast } from 'vue-toastification';
 import { router } from '@inertiajs/vue3';
 import InputField from '@/Components/inputs/InputField.vue';
 import FormSection from './FormSection.vue';
+import CancelButton from '../actions/CancelButton.vue';
+import SaveButton from '../actions/SaveButton.vue';
 
 let props = defineProps({
     initialValues: {

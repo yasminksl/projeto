@@ -1,7 +1,7 @@
 <template>
 
     <Head title="Criar Novo Produto" />
-    <Layout title="Novo Produto">
+    <Layout title="Novo Produto" href="/products" :active="true">
         <ProductForm @submit="submit" cancelUrl="/products" />
     </Layout>
 </template>

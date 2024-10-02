@@ -8,7 +8,7 @@
         <div class="flex flex-col space-y-2 mt-2">
             <div v-for="history in sortedHistories" :key="history.id" class="bg-white p-2 rounded shadow">
                 <p class="text-sm font-semibold text-gray-800">
-                    Alterado por: {{ history.changed_by }} em {{ formatDate(history.created_at) }}
+                    Alterado por {{ history.changed_by }} em {{ formatDate(history.created_at) }}
                 </p>
                 <p class="text-sm text-gray-600">
                     {{ history.description }}

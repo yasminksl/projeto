@@ -23,21 +23,37 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => 'required',
-        ]);
+        // Validação dos campos com mensagens personalizadas
+        $credentials = $request->validate(
+            [
+                'email' => ['required', 'email'],
+                'password' => 'required',
+            ],
+            [
+                'email.required' => 'O campo de e-mail é obrigatório.',
+                'email.email' => 'Por favor, insira um endereço de e-mail válido.',
+                'password.required' => 'A senha é obrigatória.',
+            ]
+        );
 
-        if(Auth::attempt($credentials)){
-            ($request->session()->regenerate());
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Este e-mail não está cadastrado.',
+            ])->onlyInput('email');
+        }
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
             return redirect()->intended();
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.'
-        ]);
+            'password' => 'A senha fornecida está incorreta.',
+        ])->onlyInput('email');
     }
+
 
     /**
      * Remove the specified resource from storage.

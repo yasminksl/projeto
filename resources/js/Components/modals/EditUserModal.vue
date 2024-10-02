@@ -3,19 +3,34 @@
         <div v-if="isVisible" class="fixed inset-0 z-50">
             <div class="fixed inset-0 bg-black opacity-50" @click="closeModal"></div>
             <div class="fixed inset-0 flex items-center justify-center">
-                <div class="modal-content bg-white p-6 rounded shadow-lg w-11/12 md:w-1/3">
-                    <h2 class="text-lg font-semibold">Alterar Informações</h2>
-                    <form @submit.prevent="submit">
-                        <div class="space-y-10">
-                            <ModalItem label="Nome" id="name" v-model="form.name" required />
-                            <ModalItem label="E-mail" id="email" v-model="form.email" required />
-                            <ModalItem label="Senha" id="password" type="password" autocomplete="current-password"
-                                v-model="form.password" required />
+                <div class="modal-content bg-white rounded shadow-lg w-11/12 md:w-1/3">
 
-                            <div class="mt-6 flex justify-end space-x-4">
-                                <button type="button" @click="closeModal">Cancelar</button>
-                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Salvar</button>
+                    <!-- Título -->
+                    <div class="border-b border-gray-200 p-4 flex justify-between">
+                        <div class="flex items-start space-x-3">
+                            <i class="fa-solid fa-book border border-gray-200 p-3 shadow-sm rounded-md"></i>
+                            <div>
+                                <h2 class="text-lg font-semibold">Alterar Dados</h2>
+                                <p class="text-sm text-gray-500">Altere os dados do usuário.</p>
                             </div>
+                        </div>
+                        <i class="fa-solid fa-xmark cursor-pointer" @click="closeModal"></i>
+                    </div>
+
+                    <form @submit.prevent="submit">
+                        <div class="p-4">
+                            <!-- Nome -->
+                            <InputField label="Nome" id="name" v-model="form.name" required wrapperClass="mt-0" />
+                            <!-- E-mail -->
+                            <InputField label="E-mail" id="email" v-model="form.email" required wrapperClass="mt-0"
+                                class="mt-4" />
+                            <!-- Senha -->
+                            <InputField label="Senha" id="password" type="password" v-model="form.password" required
+                                autocomplete="current-password" wrapperClass="mt-0" class="mt-4" />
+                        </div>
+
+                        <div class="flex justify-end p-4">
+                            <SaveButton :disabled="form.processing" type="submit">Salvar</SaveButton>
                         </div>
                     </form>
                 </div>
@@ -26,11 +41,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { useToast } from 'vue-toastification';
 import { router } from '@inertiajs/vue3';
-import ModalItem from '../utils/ModalItem.vue';
+import InputField from '../inputs/InputField.vue';
+import SaveButton from '../actions/SaveButton.vue';
 
 const props = defineProps({
     isVisible: Boolean,
@@ -80,10 +95,10 @@ const submit = async () => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.5s;
+    transition: opacity 0.5s ease;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
     opacity: 0;
 }

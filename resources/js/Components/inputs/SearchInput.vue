@@ -4,7 +4,7 @@
     @input="$emit('update:modelValue', $event.target.value)"
     type="text"
     :placeholder="placeholder"
-    class="flex-grow border border-gray-200 rounded-lg px-2"
+    class="flex-grow border border-gray-200 rounded-lg px-2 focus:outline-none focus:ring-black focus:border-black focus:ring-offset-0"
   />
 </template>
 

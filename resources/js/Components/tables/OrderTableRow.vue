@@ -1,6 +1,6 @@
 <template>
-    <tbody class="bg-white divide-y divide-gray-200">
-        <tr class="hover:bg-gray-50 cursor-pointer" @click="handleClick">
+    <tbody class="bg-gray-200">
+        <tr class="hover:bg-gray-100 cursor-pointer" @click="handleClick">
             <td class="px-4 py-2 text-sm text-gray-900">{{ order.id }}</td>
             <td :class="class">{{ order.client_name }}</td>
             <td :class="class">{{ formatDate(order.created_at) }}</td>
@@ -25,7 +25,7 @@ const props = defineProps({
     order: Object,
     class: {
         type: String,
-        default: 'px-4 py-2 text-sm text-gray-500'
+        default: 'px-4 py-2 text-sm text-black'
     },
     showScheduledDateColumn: Boolean,
     showDeliveryDateColumn: Boolean,

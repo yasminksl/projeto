@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <div class="min-h-screen bg-gray-100">
         <div class="p-6 bg-white shadow-md rounded-lg mb-6">
             <form @submit.prevent="submit">
                 <!-- Seleção do Cliente -->
@@ -22,10 +22,10 @@
                 </div>
 
                 <!-- Status -->
-                <StatusSelect v-model="form.status" :options="statusOptions" />
+                <StatusSelect label="Status da Entrega" v-model="form.status" :options="statusOptions" />
 
                 <div v-if="form.status === 'Entrega Agendada'" class="mb-4">
-                    <OrderInputField label="Data da Entrega" id="scheduled_delivery_date"
+                    <InputField label="Data da Entrega" id="scheduled_delivery_date"
                         v-model="form.scheduled_delivery_date" type="date" required />
                 </div>
 
@@ -37,14 +37,9 @@
                     @update:discount="updateDiscount" @update:interest="updateInterest" />
 
                 <!-- Botões de Ação -->
-                <div class="mt-6 flex items-center justify-end gap-x-6">
-                    <Link href="/orders" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-                    Cancelar
-                    </Link>
-                    <button type="submit" :disabled="form.processing"
-                        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                        Salvar Pedido
-                    </button>
+                <div class="flex justify-end mt-5">
+                    <CancelButton href="/orders" />
+                    <SaveButton type="submit" :disabled="form.processing" />
                 </div>
             </form>
         </div>
@@ -58,12 +53,13 @@ import { useToast } from 'vue-toastification';
 import { router } from '@inertiajs/vue3';
 import ClientSelect from '../inputs/ClientSelect.vue';
 import ProductSelect from '../inputs/ProductSelect.vue';
-import OrderInputField from '../inputs/OrderInputField.vue';
 import TextAreaField from '../inputs/TextAreaField.vue';
 import StatusSelect from '../inputs/StatusSelect.vue';
-import { Link } from '@inertiajs/vue3';
 import AddButton from '../actions/AddButton.vue';
 import CreateOrderSummary from '../sections/CreateOrderSummary.vue';
+import InputField from '../inputs/InputField.vue';
+import CancelButton from '../actions/CancelButton.vue';
+import SaveButton from '../actions/SaveButton.vue';
 
 const props = defineProps({
     initialValues: {

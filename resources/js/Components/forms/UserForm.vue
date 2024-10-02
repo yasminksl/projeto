@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="submit">
-        <div class="space-y-12">
+        <div class="space-y-12 mb-5 mt-3">
             <FormSection title="Dados do Usuário">
                 <!-- Campo de Nome do Usuário -->
                 <InputField wrapperClass="sm:col-span-4" name="name" id="name" label="Nome" v-model="form.name"
@@ -28,7 +28,9 @@
                 </div>
             </FormSection>
 
-            <FormActions cancelUrl="/users" :isProcessing="form.processing" />
+            <div class="flex justify-end">
+                <SaveButton type="submit" :disabled="form.processing" />
+            </div>
         </div>
     </form>
 </template>
@@ -40,7 +42,7 @@ import { useToast } from 'vue-toastification';
 import { router } from '@inertiajs/vue3';
 import InputField from '@/Components/inputs/InputField.vue';
 import FormSection from './FormSection.vue';
-import FormActions from '../actions/FormActions.vue';
+import SaveButton from '../actions/SaveButton.vue';
 
 const props = defineProps({
     initialValues: {

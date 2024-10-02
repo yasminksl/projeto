@@ -2,12 +2,15 @@
 
     <Head title="Clientes" />
     <Layout title="Clientes">
+
+        <!-- Adicionar -->
         <template #headerContent>
             <div class="flex items-center ml-3">
                 <AddButton @click="goToNewClient" value="Novo Cliente" />
             </div>
         </template>
 
+        <!-- Pesquisar e Filtros -->
         <div class="flex mb-6 space-x-2">
             <SearchInput v-model="search" />
             <FilterButton @click="openClientFilterModal" />
@@ -17,14 +20,16 @@
             <p class="text-gray-500">Nenhum cliente encontrado</p>
         </div>
 
-        <ul v-else role="list" class="divide-y divide-gray-300 border border-gray-300 rounded">
-            <li class="flex justify-between gap-x-6 py-5 bg-gray-100 px-4 rounded" v-for="client in clients.data"
-                :key="client.id">
+        <!-- Listagem de Clientes -->
+        <ul v-else role="list" class="divide-y divide-gray-200 rounded">
+            <li class="flex justify-between gap-x-6 py-5 bg-white px-4 rounded hover:bg-gray-200 cursor-pointer"
+                v-for="client in clients.data" :key="client.id" @click="goToClient(client.id)">
 
                 <div class="flex min-w-0 gap-x-4">
                     <div class="min-w-0 flex items-center">
                         <Link :href="`/clients/${client.id}`"
-                            class="text-sm font-semibold leading-6 text-gray-900 hover:underline">{{ client.name }}
+                            class="text-sm font-bold leading-6 text-gray-900 hover:underline">
+                        {{ client.name }}
                         </Link>
                     </div>
                 </div>
@@ -65,14 +70,14 @@ const goToNewClient = () => {
     router.get('/clients/create');
 };
 
+const goToClient = (id) => {
+    router.get(`/clients/${id}`);
+};
+
 const isModalClientFilterVisible = ref(false);
 
 const openClientFilterModal = () => {
     isModalClientFilterVisible.value = true;
-};
-
-const closeClientFilterModal = () => {
-    isModalClientFilterVisible.value = false;
 };
 
 const { searchFilters, applyFilters } = useFilters(props.filters, '/clients');

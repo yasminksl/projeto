@@ -1,47 +1,42 @@
 <template>
 
     <Head :title="product.name" />
-    <Layout title="Detalhes do Produto">
+    <Layout title="Detalhes do Produto" href="/products" :active="true">
         <template #headerContent>
-            <div class="flex space-x-4">
-                <Link :href="`/products/${product.id}`" @click="deleteProduct" form="delete-form"
-                    class="rounded-md bg-red-600 p-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 mr-3">
-                Deletar</Link>
-                <EditButton @click="goToEditProduct(product.id)" />
+            <div class="flex items center ml-3">
+                <DeleteButton :href="`/products/${product.id}`" @click="deleteProduct" form="delete-form"
+                    </DeleteButton>
             </div>
         </template>
 
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">{{ product.name }}</h3>
+        <div class="rounded-lg bg-white py-2 px-4 shadow-md mb-10">
+            <div class="flex items-center space-x-1">
+                <p class="text-lg font-semibold leading-5 text-gray-800 py-4">{{ product.name }}</p>
+                <EditButton @click="goToEditProduct(product.id)" />
             </div>
-            <div class="border-t border-gray-200">
-                <dl>
-                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">Preço</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ product.price }}</dd>
+            <div>
+                <dl class="divide-y divide-gray-200">
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt class="text-sm font-semibold leading-6 text-gray-900">Preço</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ product.price }}</dd>
                     </div>
-                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">Descrição</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ product.description }}</dd>
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt class="text-sm font-semibold leading-6 text-gray-900">Descrição</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ product.description }}
+                        </dd>
                     </div>
                 </dl>
             </div>
-        </div>
-        <div class="mt-5 ml-1">
-            <Link href="/products" class="text-indigo-600 hover:text-indigo-900">
-            Voltar
-            </Link>
         </div>
     </Layout>
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3';
 import { useToast } from 'vue-toastification';
 import Layout from '@/Shared/Layout.vue';
 import EditButton from '@/Components/actions/EditButton.vue';
+import DeleteButton from '@/Components/actions/DeleteButton.vue';
 
 let props = defineProps({
     product: Object,
