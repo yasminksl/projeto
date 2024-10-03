@@ -87,10 +87,6 @@ const openProductFilterModal = () => {
     isModalProductFilterVisible.value = true;
 };
 
-const closeProductFilterModal = () => {
-    isModalProductFilterVisible.value = false;
-};
-
 const { searchFilters, applyFilters } = useFilters(props.filters, '/products');
 const { search } = useSearch(props.filters, '/products', null, searchFilters);
 

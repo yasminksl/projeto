@@ -15,18 +15,9 @@
                 <EditButton @click="goToEditClient(client.data.id)" />
             </div>
             <dl class="divide-y divide-gray-200">
-                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt class="text-sm font-semibold leading-6 text-gray-900">Nome completo</dt>
-                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ client.data.name }}
-                    </dd>
-                </div>
-
-                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt class="text-sm font-semibold leading-6 text-gray-900">Endereço</dt>
-                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{
-                        client.data.street_address }}, nº {{ client.data.address_number }}, {{
-                            client.data.neighborhood }}, {{ client.data.city }}, CEP: {{ client.data.postal_code }}</dd>
-                </div>
+                <UserDetail label="Nome completo" :value="client.data.name" />
+                <UserDetail label="Endereço"
+                    :value="`${client.data.street_address}, nº ${client.data.address_number}, ${client.data.neighborhood}, ${client.data.city}, CEP: ${client.data.postal_code}`" />
             </dl>
         </div>
 
@@ -44,6 +35,7 @@ import { useToast } from 'vue-toastification';
 import OrderClientTable from '@/Components/tables/OrderClientTable.vue';
 import EditButton from '@/Components/actions/EditButton.vue';
 import DeleteButton from '@/Components/actions/DeleteButton.vue';
+import UserDetail from '@/Components/sections/Detail.vue';
 
 let props = defineProps({
     client: Object,

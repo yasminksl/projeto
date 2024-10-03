@@ -7,7 +7,7 @@
             <DeleteButton :href="`/users/${user.data.id}`" @click="deleteUser" form="delete-form" </DeleteButton>
         </template>
 
-        <div class="px-4 py-5 sm:p-6 bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6 bg-white shadow sm:rounded-lg mb-6">
 
             <!-- Título -->
             <div class="flex mb-4 items-center space-x-1">
@@ -39,29 +39,17 @@
                                 </svg>
                             </div>
                         </div>
-
                     </div>
 
                     <!-- Nome -->
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt class="block text-sm font-medium text-gray-900 sm:mt-px">Nome</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.data.name }}</dd>
-                    </div>
+                    <UserDetail label="Nome" :value="user.data.name" />
 
                     <!-- E-mail -->
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt class="block text-sm font-medium text-gray-900 sm:mt-px">E-mail</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.data.email }}
-                        </dd>
-                    </div>
+                    <UserDetail label="E-mail" :value="user.data.email" />
 
                     <!-- Data de Criação -->
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt class="block text-sm font-medium text-gray-900 sm:mt-px">Data de Criação</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ formattedCreationDate
-                            }}
-                        </dd>
-                    </div>
+                    <UserDetail label="Data de Criação" :value="formattedCreationDate" />
+
                 </dl>
             </div>
         </div>
@@ -86,6 +74,7 @@ import EditButton from '@/Components/actions/EditButton.vue';
 import EditPhotoUserModal from '@/Components/modals/EditPhotoUserModal.vue';
 import EditUserModal from '@/Components/modals/EditUserModal.vue';
 import DeleteButton from '@/Components/actions/DeleteButton.vue';
+import UserDetail from '@/Components/sections/Detail.vue';
 
 let props = defineProps({
     user: Object,
