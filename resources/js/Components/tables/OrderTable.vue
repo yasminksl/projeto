@@ -14,7 +14,7 @@
 <script setup>
 import { defineProps, defineEmits, computed } from 'vue';
 import { useDateUtils } from '@/Composables/useUtils';
-import Pagination from '@/Shared/Pagination.vue';
+import Pagination from '@/Shared/Paginator.vue';
 import OrderTableHeader from './OrderTableHeader.vue';
 import OrderTableRow from './OrderTableRow.vue';
 

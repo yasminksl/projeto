@@ -31,6 +31,11 @@
                                 </NavLink>
                             </div>
 
+                            <!-- Meu Perfil -->
+                            <NavLink :href="`/users/${id}`" :active="$page.url === `/users/${id}`" title="Meu Perfil">
+                                <i class="fa-solid fa-user"></i>
+                            </NavLink>
+
                             <!-- Sair -->
                             <NavLink href="/logout" method="POST" title="Sair">
                                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -46,4 +51,10 @@
 
 <script setup>
 import NavLink from './NavLink.vue';
+import { usePage } from '@inertiajs/vue3';
+
+const { props } = usePage();
+
+const id = props.auth?.user?.id ?? null;
+
 </script>

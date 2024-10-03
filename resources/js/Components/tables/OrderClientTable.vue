@@ -124,7 +124,7 @@ import { useDateUtils } from '@/Composables/useUtils';
 import { router } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import StatusIndicator from '../utils/StatusIndicator.vue';
-import Pagination from '@/Shared/Pagination.vue';
+import Pagination from '@/Shared/Paginator.vue';
 import StatusFilter from '../filters/StatusFilter.vue';
 
 let props = defineProps({

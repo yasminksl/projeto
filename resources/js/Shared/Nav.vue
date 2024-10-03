@@ -21,13 +21,12 @@
                     <div>
                         <!-- Imagem de Perfil -->
                         <div class="flex items-center space-x-1 justify between text-sm">
-                            <button @click="goToUser" type="button"
+                            <span
                                 class="relative flex max-w-xs items-center rounded-full bg-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-200"
                                 aria-expanded="false" aria-haspopup="true">
                                 <span class="absolute -inset-1.5"></span>
-                                <span class="sr-only">Open user menu</span>
                                 <img class="h-9 w-9 rounded-full" :src="`/${photo}`" alt="">
-                            </button>
+                            </span>
                         </div>
                     </div>
 
@@ -60,13 +59,11 @@
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
-import { router } from '@inertiajs/vue3';
 import NavBar from './NavBar.vue';
 
 const { props } = usePage();
 
 const photo = props.auth?.user?.photo ?? null;
-const id = props.auth?.user?.id ?? null;
 
 const menuVisible = ref(false);
 const sidebarVisible = ref(false);
@@ -77,10 +74,6 @@ const sidebarVisible = ref(false);
 
 const sidebar = () => {
     sidebarVisible.value = !sidebarVisible.value;
-};
-
-const goToUser = () => {
-    router.get(`/users/${id}`);
 };
 
 </script>

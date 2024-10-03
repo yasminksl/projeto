@@ -54,7 +54,7 @@ import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { useFilters } from '@/Composables/useFilters';
-import Pagination from '@/Shared/Pagination.vue';
+import Pagination from '@/Shared/Paginator.vue';
 import Layout from '@/Shared/Layout.vue';
 import SearchInput from '@/Components/inputs/SearchInput.vue';
 import AddButton from '@/Components/actions/AddButton.vue';
