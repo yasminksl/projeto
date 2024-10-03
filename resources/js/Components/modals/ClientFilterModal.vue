@@ -11,7 +11,7 @@
                             <div class="flex items-center space-x-2">
                                 <h2 class="text-lg font-semibold">Filtros</h2>
                                 <div class="bg-gray-100 p-2 rounded-full shadow-sm flex items-center hover:bg-gray-200 transition-all"
-                                    v-if="Object.keys(filters).length">
+                                    v-if="Object.keys({ ...filters, search: undefined }).filter(key => filters[key] !== undefined && key !== 'search').length">
                                     <p @click="clearFilters" class="cursor-pointer text-sm">
                                         Limpar todos os filtros</p>
                                     <i class="fa-regular fa-circle-xmark text-gray-400 ml-2"></i>
@@ -55,9 +55,10 @@
 
                             <!-- Filtros aplicados -->
                             <div class="mt-5">
-                                <p class="block text-sm font-medium mb-2" v-if="Object.keys(filters).length">
-                                    Filtros
-                                    aplicados:</p>
+                                <p class="block text-sm font-medium mb-2"
+                                    v-if="Object.keys({ ...filters, search: undefined }).filter(key => filters[key] !== undefined && key !== 'search').length">
+                                    Filtros aplicados:
+                                </p>
 
                                 <RemoveFilterButton label="CEP" :filterValue="filters.postal_code"
                                     @remove-filter="clearFilter('postal_code')" />
@@ -180,12 +181,12 @@ const clearFilters = () => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
 
 .modal-content {

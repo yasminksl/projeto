@@ -21,7 +21,7 @@
         </div>
 
         <!-- Listagem de Clientes -->
-        <ul v-else role="list" class="divide-y divide-gray-200 rounded">
+        <ul v-else role="list" class="divide-y divide-gray-200 rounded mb-6">
             <li class="flex justify-between gap-x-6 py-5 bg-white px-4 rounded hover:bg-gray-200 cursor-pointer"
                 v-for="client in clients.data" :key="client.id" @click="goToClient(client.id)">
 
@@ -38,7 +38,7 @@
         </ul>
 
         <!-- Paginator -->
-        <Pagination v-if="clients.data.length > 10" :links="clients.meta.links" class="mt-6" />
+        <Paginator :links="clients.meta.links" class="mt-6 mb-6" background="bg-white"/>
 
         <ClientFilterModal :isVisible="isModalClientFilterVisible"
             @update:isVisible="isModalClientFilterVisible = $event" :filters="filters"
@@ -54,7 +54,7 @@ import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { useFilters } from '@/Composables/useFilters';
-import Pagination from '@/Shared/Paginator.vue';
+import Paginator from '@/Shared/Paginator.vue';
 import Layout from '@/Shared/Layout.vue';
 import SearchInput from '@/Components/inputs/SearchInput.vue';
 import AddButton from '@/Components/actions/AddButton.vue';

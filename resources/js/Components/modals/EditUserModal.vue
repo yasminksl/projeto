@@ -25,7 +25,7 @@
                             <InputField label="E-mail" id="email" v-model="form.email" required wrapperClass="mt-0"
                                 class="mt-4" />
                             <!-- Senha -->
-                            <InputField label="Senha" id="password" type="password" v-model="form.password" required
+                            <InputField label="Senha" id="password" type="password" v-model="form.password"
                                 autocomplete="current-password" wrapperClass="mt-0" class="mt-4" />
                         </div>
 
