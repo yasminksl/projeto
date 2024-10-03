@@ -1,7 +1,7 @@
 <template>
 
     <Head title="Criar Novo Pedido" />
-    <Layout title="Novo Pedido">
+    <Layout title="Novo Pedido" href="/orders" :active="true">
         <OrderForm :clients="props.clients.data" :products="props.products" :initialValues="initialValues"
             @submit="submit" />
     </Layout>

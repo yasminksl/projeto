@@ -7,9 +7,10 @@
                 <AddButton @click="goToNewUser" value="Novo Usuário" />
             </div>
         </template>
+        <SearchInput v-model="search" class="mb-6 w-full" />
 
         <ul v-for="user in users.data" :key="user.id" role="list"
-            class="border-b border-gray-200 bg-white hover:bg-gray-50 px-4 rounded-lg mb-10">
+            class="border-b border-gray-200 bg-white hover:bg-gray-50 px-4 rounded-lg mb-6">
             <Link :href="`/users/${user.id}`">
             <li class="flex justify-between gap-x-6 py-4">
                 <div class="flex items-center min-w-0 gap-x-4">
@@ -34,11 +35,15 @@ import { router } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/inertia-vue3';
 import Layout from '@/Shared/Layout.vue';
 import AddButton from '@/Components/actions/AddButton.vue';
+import SearchInput from '@/Components/inputs/SearchInput.vue';
+import { useSearch } from '@/Composables/useSearch';
 
 let props = defineProps({
     users: Object,
     filters: Object,
 });
+
+const { search } = useSearch(props.filters, '/users', null, null);
 
 const goToNewUser = () => {
     router.get(`/users/create`);

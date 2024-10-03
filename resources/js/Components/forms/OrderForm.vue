@@ -38,7 +38,6 @@
 
                 <!-- Botões de Ação -->
                 <div class="flex justify-end mt-5">
-                    <CancelButton href="/orders" />
                     <SaveButton type="submit" :disabled="form.processing" />
                 </div>
             </form>

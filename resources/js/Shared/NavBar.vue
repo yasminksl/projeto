@@ -31,15 +31,18 @@
                                 </NavLink>
                             </div>
 
-                            <!-- Meu Perfil -->
-                            <NavLink :href="`/users/${id}`" :active="$page.url === `/users/${id}`" title="Meu Perfil">
-                                <i class="fa-solid fa-user"></i>
-                            </NavLink>
+                            <div class="space-y-2">
+                                <!-- Meu Perfil -->
+                                <NavLink :href="`/users/${id}`" :active="$page.url === `/users/${id}`"
+                                    title="Meu Perfil">
+                                    <i class="fa-solid fa-user"></i>
+                                </NavLink>
 
-                            <!-- Sair -->
-                            <NavLink href="/logout" method="POST" title="Sair">
-                                <i class="fa-solid fa-right-from-bracket"></i>
-                            </NavLink>
+                                <!-- Sair -->
+                                <NavLink href="/logout" method="POST" title="Sair">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                </NavLink>
+                            </div>
                         </ul>
                     </div>
 
