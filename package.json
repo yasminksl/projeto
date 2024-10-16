@@ -6,7 +6,7 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "@inertiajs/vue3": "^1.0.14",
+        "@inertiajs/vue3": "^1.2.0",
         "@tailwindcss/forms": "^0.5.7",
         "@tailwindcss/typography": "^0.5.10",
         "@vitejs/plugin-vue": "^5.0.0",
@@ -20,8 +20,6 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.6.0",
-        "@inertiajs/inertia": "^0.11.1",
-        "@inertiajs/inertia-vue3": "^0.6.0",
         "chart.js": "^3.9.1",
         "date-fns": "^3.6.0",
         "lodash": "^4.17.21",

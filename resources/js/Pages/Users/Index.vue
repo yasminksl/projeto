@@ -31,8 +31,7 @@
 </template>
 
 <script setup>
-import { router } from '@inertiajs/vue3';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, router } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import AddButton from '@/Components/actions/AddButton.vue';
 import SearchInput from '@/Components/inputs/SearchInput.vue';

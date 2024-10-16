@@ -9,13 +9,17 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Login
 Route::get('login', [LoginController::class, 'create'])->name('login');
 Route::post('/login', [LoginController::class, 'store']);
 Route::post('logout', [LoginController::class, 'destroy'])->middleware('auth');
 
 Route::middleware('auth')->group(function () {
+
+    // Dashboard
     Route::get('/', [DashboardController::class, 'index']);
 
+    // Users
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/create', [UserController::class, 'create']);
     Route::post('/users', [UserController::class, 'store']);
@@ -24,21 +28,26 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{user}/profile-photo', [UserController::class, 'updateProfilePhoto']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
+    // Orders
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/create', [OrderController::class, 'create']);
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders/{order}', [OrderController::class, 'show']);
     Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
 
+    // Orders Update
     Route::post('/orders/update-dates', [OrderController::class, 'updateDates']);
     Route::post('/orders/update-payment', [OrderController::class, 'updatePayment']);
     Route::post('/orders/update-order-values', [OrderController::class, 'updateOrderValues']);
     Route::post('/orders/update-order-client', [OrderController::class, 'updateOrderClient']);
 
+    // Orders Update Products
+
     Route::post('/orders/update-products', [OrderController::class, 'updateProducts']);
     Route::patch('/orders/{order}/products/{product}', [OrderController::class, 'updateProductQuantity']);
     Route::delete('/orders/{order}/products/{product}', [OrderController::class, 'removeProduct']);
 
+    // Clients
     Route::get('/clients', [ClientController::class, 'index']);
     Route::get('/clients/create', [ClientController::class, 'create']);
     Route::post('/clients', [ClientController::class, 'store']);
@@ -47,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/clients/{client}', [ClientController::class, 'update']);
     Route::delete('/clients/{client}', [ClientController::class, 'destroy']);
 
+    // Products
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/create', [ProductController::class, 'create']);
     Route::post('/products', [ProductController::class, 'store']);
