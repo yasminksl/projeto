@@ -77,8 +77,6 @@ const submit = async () => {
             toast.success('Usuário atualizado com sucesso!');
         },
         onError: (errors) => {
-            console.log(errors);
-            console.log(form.value);
             let errorMessages = "Erro ao enviar o formulário.";
 
             if (errors) {

@@ -78,7 +78,6 @@ const imageUrl = ref(`/${props.profile_photo_path}`);
 const removePhoto = () => {
     imageUrl.value = `/storage/images/profiles/default.png`;
     form.value.remove_photo = true;
-    console.log(form.value.remove_photo);
 };
 
 const form = ref({
@@ -106,7 +105,6 @@ const submit = async () => {
             onSuccess: () => {
                 closeModal();
                 router.reload();
-                console.log(form.value.profile_photo_path);
 
                 toast.success("Foto atualizada com sucesso!");
             },
@@ -119,8 +117,6 @@ const submit = async () => {
                 }
 
                 toast.error(errorMessages);
-                console.log(errors);
-                console.log(form.value.profile_photo_path);
 
                 if (form.value.profile_photo_path) {
                     imageUrl.value = URL.createObjectURL(form.value.profile_photo_path);

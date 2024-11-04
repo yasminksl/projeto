@@ -139,6 +139,4 @@ const totalOutstandingBalance = computed(() => {
     return Object.values(props.clients).reduce((total, client) => total + client.outstanding_balance, 0);
 });
 
-console.log(totalOutstandingBalance.value);
-
 </script>

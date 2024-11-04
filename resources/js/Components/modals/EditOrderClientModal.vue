@@ -59,11 +59,6 @@ const toast = useToast();
 
 const saveClient = async () => {
 
-    console.log(JSON.stringify({
-        order_id: props.orderId,
-        client_id: selectedClient.value
-    }));
-
     try {
         router.post('/orders/update-order-client', {
             order_id: props.orderId,
@@ -89,12 +84,12 @@ const saveClient = async () => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
 
 .modal-content {

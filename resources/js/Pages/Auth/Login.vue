@@ -52,7 +52,6 @@ const isEyeOpen = ref(false);
 
 const handleEyeToggle = (isOpen) => {
     isEyeOpen.value = !isOpen;
-    console.log('O olho está agora:', isOpen ? 'Aberto' : 'Fechado');
 };
 
 const submit = async () => {

@@ -37,9 +37,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
 import { useToast } from 'vue-toastification';
-import { router } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import InputField from '@/Components/inputs/InputField.vue';
 import FormSection from './FormSection.vue';
 import SaveButton from '../actions/SaveButton.vue';
@@ -92,7 +91,6 @@ const submit = async () => {
             toast.success('Usuário cadastrado com sucesso!');
         },
         onError: (errors) => {
-            console.log(errors);
             let errorMessages = "Erro ao enviar o formulário.";
 
             if (errors.profile_photo_path) {
@@ -114,5 +112,7 @@ const submit = async () => {
     const fileName = form.data().profile_photo_path ? form.data().profile_photo_path.name : 'default.png';
     imageUrl.value = `${window.location.origin}/storage/images/profiles/${fileName}`;
 };
+
+
 
 </script>
