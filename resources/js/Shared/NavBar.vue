@@ -45,7 +45,7 @@
                 </NavLink>
 
                 <!-- Sair -->
-                <NavLink as="button" href="/logout" method="post" title="Sair">
+                <NavLink href="/logout" method="post" title="Sair">
                   <i class="fa-solid fa-right-from-bracket" />
                 </NavLink>
               </div>

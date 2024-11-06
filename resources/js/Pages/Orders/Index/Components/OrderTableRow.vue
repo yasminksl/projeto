@@ -19,7 +19,7 @@
 
 <script setup>
 import { useDateUtils } from '@/Composables/useUtils.js'
-import StatusIndicator from '../utils/StatusIndicator.vue'
+import StatusIndicator from '@/Components/utils/StatusIndicator.vue'
 
 const props = defineProps({
     order: Object,

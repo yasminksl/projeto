@@ -29,9 +29,8 @@
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3'
 import { useToast } from 'vue-toastification'
-import { router } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import InputField from '@/Components/inputs/InputField.vue'
 import TextAreaField from '@/Components/inputs/TextAreaField.vue'
 import FormSection from '@/Components/forms/FormSection.vue'
