@@ -41,7 +41,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => Auth::user() ? [
                 'user' => [
                     'username' => Auth::user()->name,
-                    'photo' => Auth::user()->profile_photo_path,
+                    'photo_url' => Auth::user()->profile_photo_url,
                     'id' => Auth::user()->id,
                 ],
             ] : null,

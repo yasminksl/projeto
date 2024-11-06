@@ -1,19 +1,19 @@
 <template>
-    <Layout :title="`Editando produto: ${originalName}`" :href="`/products/${product.id}`" :active="true">
-        <ProductForm :product="product" :initialValues="product" @submit="submit" />
-    </Layout>
+  <Layout :title="`Editando produto: ${originalName}`" :href="`/products/${product.id}`" :active="true">
+    <ProductForm :product="product" :initial-values="product" @submit="submit" />
+  </Layout>
 </template>
 
 <script setup>
-import Layout from '@/Shared/Layout.vue';
-import ProductForm from '@/Components/forms/ProductForm.vue';
+import Layout from '@/Shared/Layout.vue'
+import ProductForm from '@/Components/forms/ProductForm.vue'
 
 let props = defineProps({
-    product: Object
-});
+    product: Object,
+})
 
-let originalName = props.product.name;
+let originalName = props.product.name
 
-let submit = () => { };
+let submit = () => { }
 
 </script>

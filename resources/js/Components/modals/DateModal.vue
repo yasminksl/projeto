@@ -1,67 +1,69 @@
 <template>
-    <transition name="fade">
-        <div v-if="isVisible" class="fixed inset-0 z-50">
-            <div class="fixed inset-0 bg-black opacity-50" @click="closeModal"></div>
-            <div class="fixed inset-0 flex items-center justify-center">
-                <div class="modal-content bg-white rounded shadow-lg w-11/12 md:w-1/3">
-
-                    <div class="border-b border-gray-200 p-4 flex justify-between">
-                        <div class="flex items-start space-x-3">
-                            <i class="fa-solid fa-calendar-days border border-gray-200 p-3 shadow-sm rounded-md"></i>
-                            <div>
-                                <h2 class="text-lg font-semibold">Atualizar Datas</h2>
-                                <p class="text-sm text-gray-500">Atualize as datas do pedido.</p>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-xmark cursor-pointer" @click="closeModal"></i>
-                    </div>
-
-                    <form @submit.prevent="saveOrderDates">
-
-                        <div class="p-4">
-                            <InputField wrapperClass="sm:col-span-4" type="date" name="scheduled_delivery_date"
-                                id="scheduled_delivery_date" label="Data de Agendamento"
-                                v-model="scheduledDeliveryDate" />
-
-                            <InputField wrapperClass="sm:col-span-4" type="date" name="actual_delivery_date"
-                                id="actual_delivery_date" label="Data de Conclusão" v-model="actualDeliveryDate"
-                                class="mt-4" />
-                        </div>
-
-                        <div class="flex justify-end p-4 mt-4">
-                            <SaveButton type="submit">Salvar</SaveButton>
-                        </div>
-                    </form>
-                </div>
+  <transition name="fade">
+    <div v-if="isVisible" class="fixed inset-0 z-50">
+      <div class="fixed inset-0 bg-black opacity-50" @click="closeModal" />
+      <div class="fixed inset-0 flex items-center justify-center">
+        <div class="modal-content bg-white rounded shadow-lg w-11/12 md:w-1/3">
+          <div class="border-b border-gray-200 p-4 flex justify-between">
+            <div class="flex items-start space-x-3">
+              <i class="fa-solid fa-calendar-days border border-gray-200 p-3 shadow-sm rounded-md" />
+              <div>
+                <h2 class="text-lg font-semibold">Atualizar Datas</h2>
+                <p class="text-sm text-gray-500">Atualize as datas do pedido.</p>
+              </div>
             </div>
+            <i class="fa-solid fa-xmark cursor-pointer" @click="closeModal" />
+          </div>
+
+          <form @submit.prevent="saveOrderDates">
+            <div class="p-4">
+              <InputField
+                id="scheduled_delivery_date" v-model="scheduledDeliveryDate" wrapper-class="sm:col-span-4"
+                type="date" name="scheduled_delivery_date"
+                label="Data de Agendamento"
+              />
+
+              <InputField
+                id="actual_delivery_date" v-model="actualDeliveryDate" wrapper-class="sm:col-span-4"
+                type="date" name="actual_delivery_date" label="Data de Conclusão"
+                class="mt-4"
+              />
+            </div>
+
+            <div class="flex justify-end p-4 mt-4">
+              <SaveButton type="submit">Salvar</SaveButton>
+            </div>
+          </form>
         </div>
-    </transition>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
-import { useToast } from 'vue-toastification';
-import InputField from '../inputs/InputField.vue';
-import SaveButton from '../actions/SaveButton.vue';
+import { ref } from 'vue'
+import { router } from '@inertiajs/vue3'
+import { useToast } from 'vue-toastification'
+import InputField from '../inputs/InputField.vue'
+import SaveButton from '../actions/SaveButton.vue'
 
 const props = defineProps({
     initialScheduledDate: String,
     initialActualDate: String,
     isVisible: Boolean,
     orderId: Number,
-});
+})
 
-const emit = defineEmits(['update:dates', 'update:isVisible']);
+const emit = defineEmits(['update:dates', 'update:isVisible'])
 
-const scheduledDeliveryDate = ref(props.initialScheduledDate);
-const actualDeliveryDate = ref(props.initialActualDate);
+const scheduledDeliveryDate = ref(props.initialScheduledDate)
+const actualDeliveryDate = ref(props.initialActualDate)
 
 const closeModal = () => {
-    emit('update:isVisible', false);
-};
+    emit('update:isVisible', false)
+}
 
-const toast = useToast();
+const toast = useToast()
 
 const saveOrderDates = async () => {
     try {
@@ -76,20 +78,20 @@ const saveOrderDates = async () => {
                 emit('update:dates', {
                     scheduledDeliveryDate: scheduledDeliveryDate.value,
                     actualDeliveryDate: actualDeliveryDate.value,
-                });
+                })
 
-                closeModal();
+                closeModal()
 
-                toast.success("Datas atualizadas com sucesso!");
+                toast.success('Datas atualizadas com sucesso!')
             },
-            onError: (errors) => {
-                toast.error('Erro ao salvar datas');
-            }
-        });
+            onError: () => {
+                toast.error('Erro ao salvar datas')
+            },
+        })
     } catch (error) {
-        console.error('Erro ao salvar:', error);
+        console.error('Erro ao salvar:', error)
     }
-};
+}
 </script>
 
 <style scoped>

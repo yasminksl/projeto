@@ -12,9 +12,6 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return Inertia::render('Users/Index', [
@@ -28,17 +25,11 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('Users/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -62,9 +53,9 @@ class UserController extends Controller
             $file = $request->file('profile_photo_path');
             $filename = time() . '-' . $file->getClientOriginalName();
             $file->storeAs('public/images/profiles', $filename);
-            $profile_photo_path = 'storage/images/profiles/' . $filename;
+            $profile_photo_path = $filename;
         } else {
-            $profile_photo_path = 'storage/images/profiles/default.png';
+            $profile_photo_path = 'default.png';
         }
 
         $attributes = [
@@ -79,9 +70,6 @@ class UserController extends Controller
         return redirect('/users/' . $user->id);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(User $user)
     {
         return Inertia::render('Users/Show', [
@@ -89,17 +77,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, User $user)
     {
         $attributes = $request->validate([
@@ -117,39 +94,6 @@ class UserController extends Controller
         $user->update($attributes);
     }
 
-    public function updateProfilePhoto(Request $request, User $user)
-    {
-        $request->validate([
-            'profile_photo_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'remove_photo' => 'nullable|boolean',
-        ]);
-
-        if ($request->has('remove_photo') && $request->boolean('remove_photo')) {
-            $defaultImagePath = 'images/profiles/default.png';
-
-            if ($user->profile_photo_path && Storage::exists(str_replace('storage/', '', $user->profile_photo_path))) {
-                Storage::delete(str_replace('storage/', '', $user->profile_photo_path));
-            }
-
-            $user->update(['profile_photo_path' => $defaultImagePath]);
-        }
-
-        if ($request->hasFile('profile_photo_path')) {
-            $file = $request->file('profile_photo_path');
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('public/images/profiles', $filename);
-
-            if ($user->profile_photo_path && Storage::exists(str_replace('storage/', 'public/', $user->profile_photo_path))) {
-                Storage::delete(str_replace('storage/', 'public/', $user->profile_photo_path));
-            }
-
-            $user->update(['profile_photo_path' => 'storage/images/profiles/' . $filename]);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(User $user)
     {
         if ($user->profile_photo_path && $user->profile_photo_path !== 'storage/images/profiles/default.png') {

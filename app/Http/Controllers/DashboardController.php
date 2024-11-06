@@ -81,11 +81,11 @@ class DashboardController extends Controller
             'sales' => $sales,
             'profit' => $profit,
             'clients' => $delinquentClients,
-            'total_outstanding_balance' => $totalOutstandingBalance,
-            'orders_by_status' => $ordersByStatus,
-            'sales_percentage_increase' => $salesPercentageIncrease,
-            'profit_percentage_increase' => $profitPercentageIncrease,
-            'completed_orders_percentage_increase' => $completedOrdersPercentageIncrease,
+            'totalOutstandingBalance' => $totalOutstandingBalance,
+            'ordersByStatus' => $ordersByStatus,
+            'salesPercentageIncrease' => $salesPercentageIncrease,
+            'profitPercentageIncrease' => $profitPercentageIncrease,
+            'completedOrdersPercentageIncrease' => $completedOrdersPercentageIncrease,
         ]);
     }
 }

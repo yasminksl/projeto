@@ -1,21 +1,22 @@
 <template>
-
-    <div :class="wrapperClass">
-        <label :for="id" class="block text-sm font-medium leading-6 text-gray-900">
-            {{ label }}
-        </label>
-        <div class="relative mt-2 rounded-md shadow-sm">
-            <textarea :name="name" :id="id" :autocomplete="autocomplete" :placeholder="placeholder"
-                :class="textAreaClass" v-bind="$attrs" v-on="listeners" :value="modelValue"
-                @input="$emit('update:modelValue', $event.target.value)" :rows="rows" :cols="cols" />
-        </div>
+  <div :class="wrapperClass">
+    <label :for="id" class="block text-sm font-medium leading-6 text-gray-900">
+      {{ label }}
+    </label>
+    <div class="relative mt-2 rounded-md shadow-sm">
+      <textarea
+        :id="id" :name="name" :autocomplete="autocomplete" :placeholder="placeholder"
+        :class="textAreaClass" v-bind="$attrs" :value="modelValue" :rows="rows"
+        :cols="cols" v-on="listeners" @input="$emit('update:modelValue', $event.target.value)"
+      />
     </div>
+  </div>
 </template>
 
 <script setup>
-import { computed, useAttrs } from 'vue';
+import { computed, useAttrs } from 'vue'
 
-let props = defineProps({
+defineProps({
     name: {
         type: String,
         required: true,
@@ -51,21 +52,23 @@ let props = defineProps({
     },
     rows: {
         type: Number,
-        default: 4
+        default: 4,
     },
     cols: {
         type: Number,
-        default: 50
-    }
-});
+        default: 50,
+    },
+})
 
-let $attrs = useAttrs();
+defineEmits(['update:modelValue'])
+
+let $attrs = useAttrs()
 
 let listeners = computed(() => {
     return {
         ...Object.fromEntries(
-            Object.entries($attrs).filter(([key]) => key.startsWith('on'))
+            Object.entries($attrs).filter(([key]) => key.startsWith('on')),
         ),
-    };
-});
+    }
+})
 </script>

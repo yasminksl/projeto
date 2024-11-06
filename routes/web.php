@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserImageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,13 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
 
     // Users
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/create', [UserController::class, 'create']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::get('/users/{user}', [UserController::class, 'show']);
-    Route::patch('/users/{user}', [UserController::class, 'update']);
-    Route::post('/users/{user}/profile-photo', [UserController::class, 'updateProfilePhoto']);
-    Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    Route::resource('users', UserController::class)
+        ->middleware('auth');
+    Route::post('/users/{user}/profile-photo', UserImageController::class);
 
     // Orders
     Route::get('/orders', [OrderController::class, 'index']);

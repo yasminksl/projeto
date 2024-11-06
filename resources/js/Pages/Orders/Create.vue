@@ -1,20 +1,21 @@
 <template>
-
-    <Head title="Criar Novo Pedido" />
-    <Layout title="Novo Pedido" href="/orders" :active="true">
-        <OrderForm :clients="props.clients.data" :products="props.products" :initialValues="initialValues"
-            @submit="submit" />
-    </Layout>
+  <Head title="Criar Novo Pedido" />
+  <Layout title="Novo Pedido" href="/orders" :active="true">
+    <OrderForm
+      :clients="props.clients.data" :products="props.products" :initial-values="initialValues"
+      @submit="submit"
+    />
+  </Layout>
 </template>
 
 <script setup>
-import Layout from '@/Shared/Layout.vue';
-import OrderForm from '@/Components/forms/OrderForm.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import Layout from '@/Shared/Layout.vue'
+import OrderForm from '@/Components/forms/OrderForm.vue'
+import { useForm } from '@inertiajs/vue3'
 
 let props = defineProps({
     clients: Object,
-    products: Array
+    products: Array,
 })
 
 let initialValues = {
@@ -25,11 +26,11 @@ let initialValues = {
     'comments': '',
     'products': [],
     'discount': '',
-    'interest': ''
-};
+    'interest': '',
+}
 
-let form = useForm(initialValues);
+useForm(initialValues)
 
-let submit = () => { };
+let submit = () => { }
 
 </script>
