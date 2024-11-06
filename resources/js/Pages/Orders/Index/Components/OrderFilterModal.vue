@@ -147,10 +147,10 @@
 import { ref } from 'vue'
 import { useDateUtils } from '@/Composables/useUtils'
 import { useToast } from 'vue-toastification'
-import ClientSelect from '../inputs/ClientSelect.vue'
-import RemoveFilterButton from '../utils/RemoveFilterButton.vue'
-import InputField from '../inputs/InputField.vue'
-import SaveButton from '../actions/SaveButton.vue'
+import ClientSelect from '@/Components/inputs/ClientSelect.vue'
+import RemoveFilterButton from '@/Components/utils/RemoveFilterButton.vue'
+import InputField from '@/Components/inputs/InputField.vue'
+import SaveButton from '@/Components/actions/SaveButton.vue'
 
 const props = defineProps({
     isVisible: Boolean,

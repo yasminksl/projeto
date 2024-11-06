@@ -61,7 +61,7 @@
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { router } from '@inertiajs/vue3'
-import SaveButton from '../actions/SaveButton.vue'
+import SaveButton from '@/Components/actions/SaveButton.vue'
 
 const props = defineProps({
     isVisible: Boolean,

@@ -32,8 +32,8 @@
 import { ref, computed } from 'vue'
 import { useToast } from 'vue-toastification'
 import { router } from '@inertiajs/vue3'
-import ClientSelect from '../inputs/ClientSelect.vue'
-import SaveButton from '../actions/SaveButton.vue'
+import ClientSelect from '@/Components/inputs/ClientSelect.vue'
+import SaveButton from '@/Components/actions/SaveButton.vue'
 
 const props = defineProps({
     isVisible: Boolean,

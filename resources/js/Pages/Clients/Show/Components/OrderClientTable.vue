@@ -140,9 +140,9 @@
 import { useDateUtils } from '@/Composables/useUtils'
 import { router } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
-import StatusIndicator from '../utils/StatusIndicator.vue'
+import StatusIndicator from '@/Components/utils/StatusIndicator.vue'
 import Pagination from '@/Shared/Paginator.vue'
-import StatusFilter from '../filters/StatusFilter.vue'
+import StatusFilter from '@/Components/filters/StatusFilter.vue'
 
 let props = defineProps({
     orders: Array,

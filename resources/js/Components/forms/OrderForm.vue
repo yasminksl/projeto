@@ -61,14 +61,14 @@
 import { ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import { router, useForm } from '@inertiajs/vue3'
-import ClientSelect from '../inputs/ClientSelect.vue'
-import ProductSelect from '../inputs/ProductSelect.vue'
-import TextAreaField from '../inputs/TextAreaField.vue'
-import StatusSelect from '../inputs/StatusSelect.vue'
-import AddButton from '../actions/AddButton.vue'
-import CreateOrderSummary from '../sections/CreateOrderSummary.vue'
-import InputField from '../inputs/InputField.vue'
-import SaveButton from '../actions/SaveButton.vue'
+import ClientSelect from '@/Components/inputs/ClientSelect.vue'
+import ProductSelect from '@/Components/inputs/ProductSelect.vue'
+import TextAreaField from '@/Components/inputs/TextAreaField.vue'
+import StatusSelect from '@/Components/inputs/StatusSelect.vue'
+import AddButton from '@/Components/actions/AddButton.vue'
+import CreateOrderSummary from '@/Components/sections/CreateOrderSummary.vue'
+import InputField from '@/Components/inputs/InputField.vue'
+import SaveButton from '@/Components/actions/SaveButton.vue'
 
 const props = defineProps({
     initialValues: {

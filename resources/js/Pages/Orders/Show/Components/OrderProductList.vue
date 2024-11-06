@@ -96,9 +96,9 @@ import { cloneDeep } from 'lodash'
 import { useToast } from 'vue-toastification'
 import { router } from '@inertiajs/vue3'
 import AddProductModal from './AddProductModal.vue'
-import AddButton from '../actions/AddButton.vue'
-import EditButton from '../actions/EditButton.vue'
-import SaveButton from '../actions/SaveButton.vue'
+import AddButton from '@/Components/actions/AddButton.vue'
+import EditButton from '@/Components/actions/EditButton.vue'
+import SaveButton from '@/Components/actions/SaveButton.vue'
 
 let props = defineProps({
     products: Array,

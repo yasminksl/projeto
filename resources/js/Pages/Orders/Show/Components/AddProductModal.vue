@@ -54,9 +54,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import axios from 'axios'
-import ProductSelect from '../inputs/ProductSelect.vue'
-import AddButton from '../actions/AddButton.vue'
-import SaveButton from '../actions/SaveButton.vue'
+import ProductSelect from '@/Components/inputs/ProductSelect.vue'
+import AddButton from '@/Components/actions/AddButton.vue'
+import SaveButton from '@/Components/actions/SaveButton.vue'
 
 const props = defineProps({
     isVisible: Boolean,

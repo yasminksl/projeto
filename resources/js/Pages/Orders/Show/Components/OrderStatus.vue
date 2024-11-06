@@ -19,9 +19,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useDateUtils } from '@/Composables/useUtils'
-import DateModal from '../modals/DateModal.vue'
-import StatusItem from '../utils/StatusItem.vue'
-import ActionButton from '../actions/ActionButton.vue'
+import DateModal from './DateModal.vue'
+import StatusItem from '@/Components/utils/StatusItem.vue'
+import ActionButton from '@/Components/actions/ActionButton.vue'
 
 let props = defineProps({
     order: Object,

@@ -50,8 +50,8 @@ import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { router, useForm } from '@inertiajs/vue3'
 import InputField from '@/Components/inputs/InputField.vue'
-import FormSection from './FormSection.vue'
-import SaveButton from '../actions/SaveButton.vue'
+import FormSection from '@/Components/forms/FormSection.vue'
+import SaveButton from '@/Components/actions/SaveButton.vue'
 
 const props = defineProps({
     initialValues: {

@@ -48,11 +48,11 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import PaidModal from '../modals/PaidModal.vue'
-import SummaryItem from '../utils/SummaryItem.vue'
-import ActionButton from '../actions/ActionButton.vue'
-import EditButton from '../actions/EditButton.vue'
-import EditOrderSummaryModal from '../modals/EditOrderSummaryModal.vue'
+import PaidModal from './PaidModal.vue'
+import SummaryItem from '@/Components/utils/SummaryItem.vue'
+import ActionButton from '@/Components/actions/ActionButton.vue'
+import EditButton from '@/Components/actions/EditButton.vue'
+import EditOrderSummaryModal from './EditOrderSummaryModal.vue'
 
 let props = defineProps({
     order: Object,

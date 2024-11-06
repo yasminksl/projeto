@@ -48,8 +48,8 @@
 import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { useToast } from 'vue-toastification'
-import InputField from '../inputs/InputField.vue'
-import SaveButton from '../actions/SaveButton.vue'
+import InputField from '@/Components/inputs/InputField.vue'
+import SaveButton from '@/Components/actions/SaveButton.vue'
 
 const props = defineProps({
     isVisible: Boolean,

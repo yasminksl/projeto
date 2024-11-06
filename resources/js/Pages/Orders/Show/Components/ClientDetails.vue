@@ -61,8 +61,8 @@
 <script setup>
 import { Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import EditButton from '../actions/EditButton.vue'
-import EditOrderClientModal from '../modals/EditOrderClientModal.vue'
+import EditButton from '@/Components/actions/EditButton.vue'
+import EditOrderClientModal from './EditOrderClientModal.vue'
 
 let props = defineProps({
     orderClient: Object,

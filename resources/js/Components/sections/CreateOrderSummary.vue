@@ -45,7 +45,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import InputField from '../inputs/InputField.vue'
+import InputField from '@/Components/inputs/InputField.vue'
 
 const props = defineProps({
     selectedProducts: {
