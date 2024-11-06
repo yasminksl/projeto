@@ -7,7 +7,7 @@
 
 <script setup>
 import Layout from '@/Shared/Layout.vue'
-import UserForm from '@/Components/forms/UserForm.vue'
+import UserForm from '@/Pages/Users/Create/Components/UserForm.vue'
 
 let submit = () => { }
 

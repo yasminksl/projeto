@@ -92,10 +92,10 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
-import cloneDeep from 'lodash/cloneDeep'
+import { cloneDeep } from 'lodash'
 import { useToast } from 'vue-toastification'
 import { router } from '@inertiajs/vue3'
-import AddProductModal from '../modals/AddProductModal.vue'
+import AddProductModal from './AddProductModal.vue'
 import AddButton from '../actions/AddButton.vue'
 import EditButton from '../actions/EditButton.vue'
 import SaveButton from '../actions/SaveButton.vue'

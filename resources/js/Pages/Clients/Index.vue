@@ -59,7 +59,7 @@ import Layout from '@/Shared/Layout.vue'
 import SearchInput from '@/Components/inputs/SearchInput.vue'
 import AddButton from '@/Components/actions/AddButton.vue'
 import FilterButton from '@/Components/actions/FilterButton.vue'
-import ClientFilterModal from '@/Components/modals/ClientFilterModal.vue'
+import ClientFilterModal from '@/Pages/Clients/Index/Components/ClientFilterModal.vue'
 
 let props = defineProps({
     clients: Object,

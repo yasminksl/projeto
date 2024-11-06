@@ -67,7 +67,7 @@ import { useFilters } from '@/Composables/useFilters'
 import SearchInput from '@/Components/inputs/SearchInput.vue'
 import AddButton from '@/Components/actions/AddButton.vue'
 import FilterButton from '@/Components/actions/FilterButton.vue'
-import ProductFilterModal from '@/Components/modals/ProductFilterModal.vue'
+import ProductFilterModal from '@/Pages/Products/Index/Components/ProductFilterModal.vue'
 
 let props = defineProps({
     products: Object,

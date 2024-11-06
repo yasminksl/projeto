@@ -36,9 +36,9 @@ import { router } from '@inertiajs/vue3'
 import { useFilters } from '@/Composables/useFilters'
 import Layout from '@/Shared/Layout.vue'
 import StatusFilter from '@/Components/filters/StatusFilter.vue'
-import OrderTable from '@/Components/tables/OrderTable.vue'
+import OrderTable from '@/Pages/Orders/Index/Components/OrderTable.vue'
 import FilterButton from '@/Components/actions/FilterButton.vue'
-import OrderFilterModal from '@/Components/modals/OrderFilterModal.vue'
+import OrderFilterModal from '@/Pages/Orders/Index/Components/OrderFilterModal.vue'
 import AddButton from '@/Components/actions/AddButton.vue'
 
 const props = defineProps({
