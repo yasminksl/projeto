@@ -28,20 +28,22 @@
         </div>
         <div class="flex-1 max-h-96 border-t border-gray-200 overflow-y-auto">
           <ul v-for="client in clients" :key="client.id" role="list" class="border-b border-gray-200">
-            <Link as="button" :href="`/clients/${client.id}`">
-              <li
-                class="flex items-center h-full px-3 py-3 sm:py-4 hover:bg-gray-100 transition-colors duration-200"
+            <li class="hover:bg-gray-100 transition-colors duration-200">
+              <Link
+                as="button"
+                :href="`/clients/${client.id}`"
+                class="flex items-center justify-between h-full px-3 py-3 sm:py-4 w-full"
               >
-                <div class="flex-1 min-w-0">
+                <div>
                   <p class="text-sm font-medium text-gray-900 truncate">
                     {{ client.name }}
                   </p>
                 </div>
-                <div class="inline-flex items-center text-base font-semibold text-red-500">
+                <div class="text-base font-semibold text-red-500">
                   {{ formatCurrency(client.outstanding_balance) }}
                 </div>
-              </li>
-            </Link>
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -60,42 +62,34 @@
           </div>
         </div>
       </div>
-      <Link as="button" href="/orders?status=Concluído">
-        <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 hover:bg-gray-100">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{
-                ordersByStatus['Concluído'] }}</span>
-              <h3 class="text-base font-normal text-gray-500">Pedidos Concluídos</h3>
-            </div>
-            <div class="ml-5 w-0 flex items-center justify-end flex-1 text-green-500 text-base font-bold">
-              {{ completedOrdersPercentageIncrease }}%
-              <i class="fa-solid fa-arrow-up ml-1" />
-            </div>
+
+      <Link href="/orders?status=Concluído" class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 hover:bg-gray-100">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{ ordersByStatus['Concluído'] }}</span>
+            <h3 class="text-base font-normal text-gray-500">Pedidos Concluídos</h3>
+          </div>
+          <div class="ml-5 w-0 flex items-center justify-end flex-1 text-green-500 text-base font-bold">
+            {{ completedOrdersPercentageIncrease }}%
+            <i class="fa-solid fa-arrow-up ml-1" />
           </div>
         </div>
       </Link>
 
-      <Link as="button" href="/orders?status=Entrega%20Agendada">
-        <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 hover:bg-gray-100">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{
-                ordersByStatus['Entrega Agendada'] }}</span>
-              <h3 class="text-base font-normal text-gray-500">Entregas Agendadas</h3>
-            </div>
+      <Link href="/orders?status=Entrega%20Agendada" class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 hover:bg-gray-100">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{ ordersByStatus['Entrega Agendada'] }}</span>
+            <h3 class="text-base font-normal text-gray-500">Entregas Agendadas</h3>
           </div>
         </div>
       </Link>
 
-      <Link as="button" href="/orders?status=Entrega%20Não%20Agendada">
-        <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 hover:bg-gray-100">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{
-                ordersByStatus['Entrega Não Agendada'] }}</span>
-              <h3 class="text-base font-normal text-gray-500">Entregas Não Agendadas</h3>
-            </div>
+      <Link href="/orders?status=Entrega%20Não%20Agendada" class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 hover:bg-gray-100">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{ ordersByStatus['Entrega Não Agendada'] }}</span>
+            <h3 class="text-base font-normal text-gray-500">Entregas Não Agendadas</h3>
           </div>
         </div>
       </Link>
